@@ -1,7 +1,7 @@
 import time
 from random import randint
-import urllib3
 
+from urllib3 import ProxyManager, make_headers, PoolManager
 
 from Requests.RequesterException import RequesterException
 
@@ -10,12 +10,13 @@ from Requests.RequesterException import RequesterException
 
 class Requester:
 
-    def __init__(self, url, retries=4, timeout=30, sleep_time=10):
+    def __init__(self, url, retries=4, timeout=30, sleep_time=10, proxy=None):
         """
         :param url: server url
         :param retries: you can control the retries using the retries parameter to request
         :param timeout: Timeouts allow you to control how long requests are allowed to run before being aborted
         :param sleep_time: Average waiting time before next retry
+        :param proxy: proxy server
         """
 
         self.__url = url
@@ -23,7 +24,12 @@ class Requester:
         self.__timeout = timeout
         self.__sleep_time = sleep_time
 
-        self.__http = urllib3.PoolManager()
+        if proxy:
+            # TODO make proxy authorization
+            # default_headers = make_headers(proxy_basic_auth='myusername:mypassword')
+            self.__http = PoolManager()
+        else:
+            self.__http = PoolManager()
 
     def get_request(self, parameters=None):
         """
@@ -54,3 +60,5 @@ class Requester:
                     time.sleep(self.__sleep_time * (counter - 1)+random_delta)
 
         return response
+
+
