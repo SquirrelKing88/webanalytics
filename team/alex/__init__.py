@@ -10,4 +10,4 @@ def show(name, age, uni, hobby, job):
     :return: None
     """
 
-    print('Hello, {0}. Your age is {1}. Your hobby is {2}. Your job is {3}')
+    print('Hello, {0}. Your age is {1}. Your hobby is {2}. Your job is {3}'.format(name, age, uni, hobby, job))
