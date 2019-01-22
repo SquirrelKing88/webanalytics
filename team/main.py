@@ -1,3 +1,4 @@
-from team.igor import hello as igor_hello
+from team.Danil import some_function as danil
 
-igor_hello("Igor",30)
+danil(some_argument="lalala")
+
