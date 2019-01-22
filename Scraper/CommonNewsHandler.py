@@ -47,6 +47,7 @@ class CommonNewsHandler:
                              url_2:{
                                     ...
                                     }
+                                    each row of dictionary could be created by  get_article_row method
 
         """
 

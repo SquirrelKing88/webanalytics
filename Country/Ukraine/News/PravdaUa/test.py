@@ -10,17 +10,24 @@ translator = GoogleTranslator()
 
 # today news https://www.pravda.com.ua/news/
 url = "https://www.pravda.com.ua/news/"
+
+# step 1. Read all page with taday's news
 requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
-
 html = response.data
+
+# step 2. Create half empty dataset with parsed urls of articles
 dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
 
+# step 3. Loop over all urls and scrape article data
 for url in  list(dataset):
+
+    # make new request to upload article data
     requester = Requester(url=url, retries=5)
     response = requester.make_get_request()
     html = response.data
 
+    # load html into soup
     soup = BeautifulSoup(html, 'html.parser')
 
     subtitle = NewsScraper.parse_article_subtitle(html=html, soup=soup)
@@ -52,5 +59,6 @@ for url in  list(dataset):
             print("Translation error with url {0} and text {1}".format(url,text))
 
 
+# step 4. Save dataset to folder
 writer = FileWriter("data/news.csv")
 writer.write(dataset)
