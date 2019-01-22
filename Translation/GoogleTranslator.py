@@ -11,7 +11,7 @@ class GoogleTranslator:
 
     def get_translation(self, original_text, destination_language='en'):
         """
-
+        :param original_text: text to translate
         :param destination_language: language abbreviation
         :return: dictionary{'original_language': , 'original_text': , 'translation_language': , 'translation': }
         """
