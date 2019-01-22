@@ -1,7 +1,9 @@
 import time
 from random import randint
+from urllib.parse import urlparse
 
-from urllib3 import ProxyManager, make_headers, PoolManager
+from urllib3 import ProxyManager, make_headers, PoolManager, disable_warnings
+disable_warnings()
 
 from Requests.RequesterException import RequesterException
 
@@ -9,6 +11,9 @@ from Requests.RequesterException import RequesterException
 # https://urllib3.readthedocs.io/en/latest/user-guide.html
 
 class Requester:
+    """
+    Class to perform https/http request
+    """
 
     def __init__(self, url, retries=4, timeout=30, sleep_time=10, proxy=None):
         """
@@ -31,8 +36,10 @@ class Requester:
         else:
             self.__http = PoolManager()
 
-    def get_request(self, parameters=None):
+    def make_get_request(self, parameters=None):
         """
+        Perform GET request with parameters
+
         :param parameters: dictionary {key:value}
         :return: http response
         """
@@ -45,6 +52,8 @@ class Requester:
             try:
 
                 response = self.__http.request('GET',self.__url, headers = headers, fields = parameters,timeout=self.__timeout)
+                #TODO delete print
+                print("Loading data from {0}".format(self.__url))
 
                 # Success
                 if response.status==200:
@@ -57,8 +66,11 @@ class Requester:
                 else:
                     # wait a random amount of time between requests to avoid bot detection
                     random_delta = randint(1, self.__sleep_time)
-                    time.sleep(self.__sleep_time * (counter - 1)+random_delta)
+                    time.sleep(self.__sleep_time * counter+random_delta)
 
+                    # TODO delete print
+                    print("Waiting {0}".format(self.__url))
         return response
 
-
+    def get_url_root(self):
+        return '{}://{}'.format(urlparse(self.__url).scheme, urlparse(self.__url).netloc)
