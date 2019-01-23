@@ -4,7 +4,7 @@ from Scraper.CommonNewsHandler import CommonNewsHandler
 from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
-
+)
 class NewsScraper(CommonNewsHandler):
     """
     Inherit CommonNewsHandler for pravda.com.ua
@@ -15,14 +15,14 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        div_news = soup.find_all('div', {'class': ['news_all']})
+        div_news = soup.find_all('div', {'class': ['news_all']}
 
         if not div_news:
             return None
 
         div_links = div_news[0].find_all('div', {'class': ['article']})
 
-        result = dict()
+                result = dict()
 
         for article in div_links:
             link = article.find('a')

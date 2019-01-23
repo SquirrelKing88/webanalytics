@@ -53,7 +53,7 @@ class Requester:
 
                 response = self.__http.request('GET',self.__url, headers = headers, fields = parameters,timeout=self.__timeout)
                 #TODO delete print
-                print("Loading data from {0}".format(self.__url))
+                #print("Loading data from {0}".format(self.__url))
 
                 # Success
                 if response.status==200:
@@ -69,7 +69,7 @@ class Requester:
                     time.sleep(self.__sleep_time * counter+random_delta)
 
                     # TODO delete print
-                    print("Waiting {0}".format(self.__url))
+                    #print("Waiting {0}".format(self.__url))
         return response
 
     def get_url_root(self):

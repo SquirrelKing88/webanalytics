@@ -20,7 +20,7 @@ html = response.data
 dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
 
 # step 3. Loop over all urls and scrape article data
-for url in  list(dataset):
+    for url in list(dataset):
 
     # make new request to upload article data
     requester = Requester(url=url, retries=5)

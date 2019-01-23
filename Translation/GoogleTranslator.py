@@ -5,8 +5,7 @@ class GoogleTranslator:
     def __init__(self):
 
         self.__translator = Translator(service_urls=[
-                                                      'translate.google.com',
-
+                                                      'translate.google.com'
                                                     ])
 
     def get_translation(self, original_text, destination_language='en'):

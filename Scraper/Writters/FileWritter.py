@@ -24,7 +24,7 @@ class FileWriter(CommonWriter):
         :param dictionary: any dictionary
         :return: None.
         """
-        with open(self.filepath, mode='a+') as file:
+        with open(self.filepath, mode='a+', encoding="utf-8") as file:
             for url in dictionary:
                 # TODO delete shallow copy
                 data = copy.copy(dictionary[url])
