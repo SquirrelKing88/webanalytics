@@ -3,6 +3,9 @@ from random import randint
 from urllib.parse import urlparse
 
 from urllib3 import ProxyManager, make_headers, PoolManager, disable_warnings
+from selenium import webdriver
+import os
+
 disable_warnings()
 
 from Requests.RequesterException import RequesterException
@@ -28,6 +31,7 @@ class Requester:
         self.__retries = retries
         self.__timeout = timeout
         self.__sleep_time = sleep_time
+
 
         if proxy:
             # TODO make proxy authorization
@@ -74,3 +78,31 @@ class Requester:
 
     def get_url_root(self):
         return '{}://{}'.format(urlparse(self.__url).scheme, urlparse(self.__url).netloc)
+
+    @staticmethod
+    def run_html(html_content):
+        """
+
+        :param html_content: html with js
+        :return: executed html in browser
+        """
+
+        # TODO load driver depend on OS type
+        # TODO load static driver
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+        chromedriver = os.path.join(dir_path, 'drivers', 'chromedriver_win')
+
+        options = webdriver.ChromeOptions()
+        options.add_argument('headless')
+        options.add_argument('window-size=1200x600')  # optional
+
+        browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)
+
+
+        browser.get("data:text/html;charset=utf-8,{html_content}".format(html_content=html_content))
+
+        html_content = browser.page_source
+
+        browser.quit()
+
+        return html_content
