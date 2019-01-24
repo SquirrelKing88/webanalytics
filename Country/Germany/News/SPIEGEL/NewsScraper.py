@@ -31,11 +31,17 @@ class NewsScraper(CommonNewsHandler):
         return result
     @staticmethod
     def parse_article_time(html=None, soup=None):
+
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
+        time_line = soup.time['datetime']
+        time = re.findall('\d\d:\d\d:\d\d',time_line)
+        time = re.split(':', time[0])
+        hours = time[0]
+        minutes = time[1]
+        seconds = time[2]
 
-        # TODO
-        return None, None, None
+        return hours, minutes, seconds
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
@@ -43,27 +49,38 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        subtitle = soup.find_all('div', {'class': ['article__subtitle']})
+        subtitle = soup.find_all('p')
 
         if subtitle:
             return subtitle[0].text.strip()
         else:
             return None
 
-
     @staticmethod
     def parse_article_text(html=None, soup=None):
 
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
+        subtitle = soup.find_all('p')
+        list_of_text = []
+        for string in subtitle:
+            text = string.string
+            if text != None:
+                list_of_text.append(text)
 
-        text = soup.find_all('div', {'class': ['post_news__text', 'post__text']})
+        text = '.'.join(list_of_text)
 
-        if text:
-            html_text = text[0].prettify()
-            cleaned_text = text[0]
-            [x.extract() for x in cleaned_text.findAll('script')]
+        return html, text
 
-            return html_text, cleaned_text.text.strip()
-        else:
-            return None, None
+
+    def parse_article_date(html=None, soup=None):
+
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+        date_line = soup.time['datetime']
+        date = re.findall('\d\d-\d\d-\d\d',date_line)
+        date = date[0]
+
+        return date
+
