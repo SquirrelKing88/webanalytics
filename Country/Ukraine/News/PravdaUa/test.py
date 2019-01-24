@@ -50,13 +50,8 @@ dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    if text:
-        # TODO delete try except block. Find exception reason
-        try:
-            translation_result = translator.get_translation(text)
-            dataset[url]["translation_en"] = translation_result['translation']
-        except Exception:
-            print("Translation error with url {0} and text {1}".format(url,text))
+    translation_result = translator.get_translation(text)
+    dataset[url]["translation_en"] = translation_result['translation']
 
 
 # step 4. Save dataset to folder
