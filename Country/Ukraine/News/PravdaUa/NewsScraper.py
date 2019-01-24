@@ -6,6 +6,7 @@ from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
 
+
 class NewsScraper(CommonNewsHandler):
     """
     Inherit CommonNewsHandler for pravda.com.ua
@@ -37,7 +38,8 @@ class NewsScraper(CommonNewsHandler):
         return result
 
     @staticmethod
-    def parse_article_datetime(html=None, soup=None,year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
+    def parse_article_datetime(html=None, soup=None, year=None, month=None, day=None, hours=None, minutes=None,
+                               seconds=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
@@ -58,7 +60,6 @@ class NewsScraper(CommonNewsHandler):
             return subtitle[0].text.strip()
         else:
             return None
-
 
     @staticmethod
     def parse_article_text(html=None, soup=None):

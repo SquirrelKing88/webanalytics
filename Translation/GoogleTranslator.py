@@ -16,7 +16,7 @@ class GoogleTranslator:
         """
         :param original_text: text to translate
         :param destination_language: language abbreviation
-        :param max_sentence_count: text will be devided on parts with max_sentence_count size
+        :param max_sentence_count: text will be divided on parts with max_sentence_count size
         :return: dictionary{'original_language': , 'original_text': , 'translation_language': , 'translation': }
         """
 

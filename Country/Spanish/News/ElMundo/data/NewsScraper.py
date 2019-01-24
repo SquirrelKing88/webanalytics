@@ -4,6 +4,9 @@ from Scraper.CommonNewsHandler import CommonNewsHandler
 from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
+from Translation.GoogleTranslator import GoogleTranslator
+
+translator = GoogleTranslator()
 
 
 class NewsScraper(CommonNewsHandler):
@@ -19,35 +22,29 @@ class NewsScraper(CommonNewsHandler):
             soup = BeautifulSoup(html, "html.parser")
 
         div_news = soup.find_all("div", {'class': ['new_seccion']})
-        print('NEWS', div_news)
+
         if not div_news:
             return None
-        div_links = div_news[0].find_all('div', {'class': ['article']})
-        if not div_links:
-            return None
-        result = dict()
-        for article in div_links:
-            link = article.find('a')
-            url = link['href']
-            if 'http' not in url:
-                url = urljoin(url_root, url)
-            result[url] = CommonNewsHandler.get_article_row(url=url, title=link.text)
-        return result
+        for div in div_news:
+            header = div.find_all("div", {'class': ['caption']})
+            text = header[0].p
+            if text is not None:
+                text = text.text
+            a = header[0].find_all("a")
+            header_text = a[0].get_text()
+            header_link = a[0].get('href')
+            div_sub = soup.find_all("span", {'class': ['origen']})
+            subtitle = div_sub[0]
+            if subtitle is not None:
+                subtitle = subtitle.text
+            article = {
+                'url': url_root,
+                'date': '',
+                'title': header_text,
+                'subtitle': subtitle,
+                "html": '',
+                "text": text,
+                "translation_en":''
+            }
+            print('ARTICLE', article)
 
-    @staticmethod
-    def parse_article_subtitle(html=None, soup=None):
-        result = dict()
-
-        return result
-
-    @staticmethod
-    def parse_article_text(html=None, soup=None):
-        result = dict()
-
-        return result
-
-    @staticmethod
-    def parse_article_time(html=None, soup=None):
-        result = dict()
-
-        return result
