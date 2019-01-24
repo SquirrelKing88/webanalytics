@@ -41,7 +41,7 @@ class NewsScraper(CommonNewsHandler):
     def parse_article_datetime(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-        print(soup.prettify())
+
         date = soup.find('span', {'itemprop': 'datePublished'})['content']
 
         result = datetime.strptime(date[:-1:], "%Y-%m-%dT%H:%M:%S")
