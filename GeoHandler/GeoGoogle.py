@@ -27,6 +27,8 @@ class GeoGoogle:
         result = self.__gmaps.find_place(country_name, 'textquery')
 
         # TODO check response status
+        if (result["status"]!=200):
+            raise Exception("Response status = {}".format(result["status"]))
         # TODO check data availability
 
         candidate = result['candidates'][0]['place_id']

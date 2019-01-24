@@ -1,3 +1,4 @@
+from datetime import datetime
 from urllib.parse import urljoin
 
 from Scraper.CommonNewsHandler import CommonNewsHandler
@@ -36,12 +37,14 @@ class NewsScraper(CommonNewsHandler):
         return result
 
     @staticmethod
-    def parse_article_time(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None,year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        # TODO
-        return None, None, None
+        # TODO scrape year month and day
+        date = datetime(year=year, month=month, day=day)
+
+        return date
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
