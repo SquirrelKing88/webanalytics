@@ -19,7 +19,7 @@ class GoogleSuggestions:
         """
         parameters ={"client":"chrome", "q":" ".join(words)}
 
-        response = self.__requester.get_request(parameters=parameters)
+        response = self.__requester.make_get_request(parameters=parameters)
 
         return json.loads(response.data.decode('utf-8'))[1]
 

@@ -49,16 +49,21 @@ class CommonNewsHandler:
         return None
 
     @staticmethod
-    def parse_article_time(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None, year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
         """
         Parse article time
 
         :param html: html to parse
         :param soup: instance of Beautiful Soup
-        :return: hour, minute, seconds
+        :param day
+        :param month
+        :param hours
+        :param minutes
+        :param seconds
+        :return: article datetime
         """
 
-        return None, None, None
+        return None
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
