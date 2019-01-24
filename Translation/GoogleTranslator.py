@@ -1,4 +1,8 @@
 from googletrans import Translator
+import nltk.data
+
+from LanguageProcessing.LanguageHandler import LanuageHandler
+
 
 class GoogleTranslator:
 
@@ -9,17 +13,49 @@ class GoogleTranslator:
 
                                                     ])
 
-    def get_translation(self, original_text, destination_language='en'):
+    def get_translation(self, original_text, destination_language='en', max_sentence_count=10):
         """
         :param original_text: text to translate
         :param destination_language: language abbreviation
+        :param max_sentence_count: text will be devided on parts with max_sentence_count size
         :return: dictionary{'original_language': , 'original_text': , 'translation_language': , 'translation': }
         """
 
-        translation = self.__translator.translate(original_text, dest=destination_language)
-        return {
-            'original_language': translation.src,
+        if not original_text:
+            return {
+            'original_language': None,
             'original_text': original_text,
             'translation_language': destination_language,
-            'translation': translation.text
+            'translation': None
+        }
+
+
+        # TODO if not detected
+        detected = self.__translator.detect(original_text[:100])
+        original_language = detected.lang
+
+
+        tokenizer = LanuageHandler.get_tokenizer(original_language)
+        sentences = tokenizer.tokenize(original_text.strip())
+
+        sentenses_count = len(sentences)
+
+        batch_count = sentenses_count//max_sentence_count
+        if sentenses_count%max_sentence_count:
+            batch_count+=1
+
+        translation=""
+        for batch in range(batch_count):
+
+            text_batch = sentences[max_sentence_count*batch:(batch+1)*max_sentence_count]
+            translation_result = self.__translator.translate(" ".join(text_batch), dest=destination_language)
+            translation+=translation_result.text
+
+
+
+        return {
+            'original_language': original_language,
+            'original_text': original_text,
+            'translation_language': destination_language,
+            'translation': translation
         }
