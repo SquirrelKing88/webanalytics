@@ -1,10 +1,11 @@
+from datetime import datetime
 from urllib.parse import urljoin
 
 from Scraper.CommonNewsHandler import CommonNewsHandler
 from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
-)
+
 class NewsScraper(CommonNewsHandler):
     """
     Inherit CommonNewsHandler for pravda.com.ua
@@ -15,14 +16,14 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        div_news = soup.find_all('div', {'class': ['news_all']}
+        div_news = soup.find_all('div', {'class': ['news_all']})
 
         if not div_news:
             return None
 
         div_links = div_news[0].find_all('div', {'class': ['article']})
 
-                result = dict()
+        result = dict()
 
         for article in div_links:
             link = article.find('a')
@@ -36,12 +37,14 @@ class NewsScraper(CommonNewsHandler):
         return result
 
     @staticmethod
-    def parse_article_time(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None,year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        # TODO
-        return None, None, None
+        # TODO scrape year month and day
+        date = datetime(year=year, month=month, day=day)
+
+        return date
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
