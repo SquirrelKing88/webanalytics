@@ -51,13 +51,9 @@ for url in list(dataset):
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    if text:
-        # TODO delete try except block. Find exception reason
-        try:
-            translation_result = translator.get_translation(text)
-            dataset[url]["translation_en"] = translation_result['translation']
-        except Exception:
-            print("Translation error with url {0} and text {1} \n".format(url, text))
+    translation_result = translator.get_translation(text)
+    dataset[url]["translation_en"] = translation_result['translation']
+
 
 
 # step 4. Save dataset to folder

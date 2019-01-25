@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 class NewsScraper(CommonNewsHandler):
     """
-    Inherit CommonNewsHandler for pravda.com.ua
+    Inherit CommonNewsHandler for ceskenoviny.cz
     """
 
     @staticmethod
@@ -68,7 +68,7 @@ class NewsScraper(CommonNewsHandler):
         text = soup.find('div', {'itemprop': 'articleBody'})
 
         if text:
-            [x.extract() for x in text.findAll('script')]
+            text = [x.extract() for x in text.findAll('script')]
             html_text = text.prettify()
             cleaned_text = text.text
             return html_text, cleaned_text.strip()
