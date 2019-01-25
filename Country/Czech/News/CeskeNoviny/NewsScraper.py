@@ -6,7 +6,6 @@ import re
 from bs4 import BeautifulSoup
 
 class NewsScraper(CommonNewsHandler):
-
     """
     Inherit CommonNewsHandler for ceskenoviny.cz
     """
@@ -21,8 +20,9 @@ class NewsScraper(CommonNewsHandler):
         result = dict()
         for article in div_links:
             link = article.find('a')
-            if link == None:
-                break
+            if link is None:
+                print('No link')
+                continue
             url = link['href']
             title = link.find('h3', {'class': 'title'})
 
@@ -69,9 +69,11 @@ class NewsScraper(CommonNewsHandler):
         text = soup.find('div', {'itemprop': 'articleBody'})
 
         if text:
-            text = [x.extract() for x in text.findAll('script')]
+            [x.extract() for x in text.findAll('script')]
             html_text = text.prettify()
             cleaned_text = text.text
+            print('html:', html_text)
+            print('cleaned:', cleaned_text)
             return html_text, cleaned_text.strip()
         else:
             return None, None

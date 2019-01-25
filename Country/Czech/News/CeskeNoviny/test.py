@@ -51,8 +51,8 @@ for url in list(dataset):
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    translation_result = translator.get_translation(text)
-    dataset[url]["translation_en"] = translation_result['translation']
+    #translation_result = translator.get_translation(text)
+    #dataset[url]["translation_en"] = translation_result['translation']
 
 
 
