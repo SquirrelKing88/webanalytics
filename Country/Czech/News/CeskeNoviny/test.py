@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from Requests.Requester import Requester
-from Country.Ukraine.News.PravdaUa.NewsScraper import NewsScraper
+from Country.Czech.News.CeskeNoviny.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 from Translation.GoogleTranslator import  GoogleTranslator
 from Scraper.Writters.FileWritter import FileWriter
@@ -16,12 +16,10 @@ url = "https://www.ceskenoviny.cz/prehled-zprav/"
 requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
 html = response.data
-print('html: ', html)
 
 
 # step 2. Create half empty dataset with parsed urls of articles
 dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(), html=html)
-print('dataset: ', dataset)
 
 
 # step 3. Loop over all urls and scrape article data

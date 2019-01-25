@@ -21,9 +21,12 @@ class NewsScraper(CommonNewsHandler):
         for article in div_links:
             # проверяем дату, чтоб достать новости только за один день:
             #date_time = article.find('span', {'class': ['tag blue']}).text
+            #print(date_time)
             #if date_time[:2] != '25':
             #    break
             link = article.find('a')
+            if link == None:
+                break
             url = link['href']
             title = link.find('h3', {'class': 'title'})
 
@@ -40,13 +43,13 @@ class NewsScraper(CommonNewsHandler):
             soup = BeautifulSoup(html, 'html.parser')
 
         date_time = soup.find('div', {'class': 'box-article-info'})
-        time  = date_time['span'].text
+        time = date_time.find('span', {'itemprop': 'datePublished'}).text
 
-        line = re.search(r"\d{2}:\d{2}", time)
+        line = re.search(r"\d{2}:\d{2}", time).group(0)
         hours = line[:2]
-        minutes = line[2:]
+        minutes = line[3:]
         # TODO
-        return hours, minutes
+        return int(hours), int(minutes)
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
@@ -67,17 +70,20 @@ class NewsScraper(CommonNewsHandler):
 
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-        article = soup.find_all('div', itemprop='articleBody')
+        article = soup.find('div', itemprop='articleBody')
         text = article.find_all('p')
 
         if text:
             full_text = ''
+            html_text = ''
             for p in text:
-                full_text += p
-            html_text = full_text.prettify()
-            [x.extract() for x in full_text.findAll('p')] #extract убирает комменты
+                html_p = p.prettify()
+                html_text += html_p + '\n'
+                p.extract()
+                #[x.extract() for x in p.findall('script')] #extract убирает комменты
+                full_text += p.text
             cleaned_text = full_text
 
-            return html_text, cleaned_text.text.strip()
+            return html_text, cleaned_text.strip()
         else:
             return None, None
