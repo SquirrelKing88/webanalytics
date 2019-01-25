@@ -57,7 +57,7 @@ for url in list(dataset):
             translation_result = translator.get_translation(text)
             dataset[url]["translation_en"] = translation_result['translation']
         except Exception:
-            print("Translation error with url {0} and text {1}".format(url, text))
+            print("Translation error with url {0} and text {1} \n".format(url, text))
 
 
 # step 4. Save dataset to folder
