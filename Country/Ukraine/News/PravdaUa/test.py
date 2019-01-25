@@ -20,7 +20,7 @@ html = response.data
 dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
 
 # step 3. Loop over all urls and scrape article data
-for url in  list(dataset):
+for url in list(dataset):
 
     # make new request to upload article data
     requester = Requester(url=url, retries=5)
@@ -32,31 +32,17 @@ for url in  list(dataset):
 
     subtitle = NewsScraper.parse_article_subtitle(html=html, soup=soup)
 
-    hours, minutes, seconds = NewsScraper.parse_article_time(html=html, soup=soup)
+    date = NewsScraper.parse_article_datetime(html=html, soup=soup, year=2019, month=1, day=22)
 
     html, text = NewsScraper.parse_article_text(html=html, soup=soup)
-
-    # TODO scrape year month and day
-    date = datetime(year=2019, month=1, day=23)
-    if hours:
-        date = date.replace(hour=hours)
-    if minutes:
-        date = date.replace(minute=minutes)
-    if seconds:
-        date = date.replace(second=seconds)
 
     dataset[url]['date']=date
     dataset[url]['subtitle']=subtitle
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    if text:
-        # TODO delete try except block. Find exception reason
-        try:
-            translation_result = translator.get_translation(text)
-            dataset[url]["translation_en"] = translation_result['translation']
-        except Exception:
-            print("Translation error with url {0} and text {1}".format(url,text))
+    translation_result = translator.get_translation(text)
+    dataset[url]["translation_en"] = translation_result['translation']
 
 
 # step 4. Save dataset to folder
