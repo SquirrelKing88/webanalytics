@@ -14,6 +14,7 @@ class LanuageHandler:
         'english': 'en',
         'russian': 'ru',
         'icelandic': 'is'
+    #     TODO add languages
     }
 
     @staticmethod
