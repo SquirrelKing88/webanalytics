@@ -6,6 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 class NewsScraper(CommonNewsHandler):
+
     """
     Inherit CommonNewsHandler for ceskenoviny.cz
     """
