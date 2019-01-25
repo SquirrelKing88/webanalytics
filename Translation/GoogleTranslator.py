@@ -1,6 +1,4 @@
 from googletrans import Translator
-import nltk.data
-
 from LanguageProcessing.LanguageHandler import LanuageHandler
 
 
