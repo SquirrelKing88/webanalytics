@@ -1,4 +1,5 @@
 beautifulsoup4==4.7.1
+googletrans
 certifi==2018.11.29
 chardet==3.0.4
 elasticsearch==6.3.1

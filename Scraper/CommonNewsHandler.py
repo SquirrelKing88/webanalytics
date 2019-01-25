@@ -1,8 +1,4 @@
 class CommonNewsHandler:
-    """
-    News handles interface
-    """
-
     @staticmethod
     def get_article_row(url=None, date=None, title=None, subtitle=None, html=None, text=None, translation=None):
         """
@@ -15,7 +11,7 @@ class CommonNewsHandler:
         :param html: html
         :param text: cleared text
         :param translation: english translation
-        :return: dicitonary
+        :return: dictionary
         """
         return {
                     "url": url,
@@ -24,7 +20,7 @@ class CommonNewsHandler:
                     "subtitle": subtitle,
                     "html": html,
                     "text": text,
-                    "translation_en":translation
+                    "translation_en": translation
                 }
 
     @staticmethod
@@ -50,7 +46,6 @@ class CommonNewsHandler:
                                     each row of dictionary could be created by  get_article_row method
 
         """
-
         return None
 
     @staticmethod

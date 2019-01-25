@@ -2,7 +2,7 @@ from Requests.Requester import Requester
 
 
 requester = Requester(url="http://google.com")
-response = requester.make_get_request({'q':'ok'})
+response = requester.make_get_request({'q': 'ok'})
 
 html = response.data.decode('utf-8')
 print(Requester.run_html(html))
