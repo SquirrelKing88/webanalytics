@@ -34,14 +34,12 @@ for url in list(dataset):
 
     date = NewsScraper.parse_article_datetime(html=html, soup=soup, year=2019, month=1, day=22)
 
-    html, text = NewsScraper.parse_article_text(html=html, soup=soup)
+    dataset[url]["html"], dataset[url]["text"] = NewsScraper.parse_article_text(html=html, soup=soup)
 
-    dataset[url]['date']=date
-    dataset[url]['subtitle']=subtitle
-    dataset[url]["text"] = text
-    dataset[url]["html"] = html
+    dataset[url]['date'] = date
+    dataset[url]['subtitle'] = subtitle
 
-    translation_result = translator.get_translation(text)
+    translation_result = translator.get_translation(dataset[url]["text"])
     dataset[url]["translation_en"] = translation_result['translation']
 
 
