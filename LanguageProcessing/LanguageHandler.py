@@ -17,8 +17,6 @@ class LanuageHandler:
         'greek': 'el',
         'polish': 'pl',
         'german': 'de'
-
-        #TODO add languages
     }
 
     @staticmethod
