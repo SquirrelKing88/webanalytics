@@ -56,3 +56,7 @@ class GoogleTranslator:
             'translation_language': destination_language,
             'translation': translation
         }
+
+    def __get_translation_thread(self, original_text, destination_language='en'):
+
+        return None
