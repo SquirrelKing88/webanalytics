@@ -39,7 +39,7 @@ class NewsScraper(CommonNewsHandler):
             return article.text
 
     @staticmethod
-    def parse_article_time(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
