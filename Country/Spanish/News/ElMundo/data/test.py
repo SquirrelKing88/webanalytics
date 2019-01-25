@@ -12,16 +12,9 @@ requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
 
 
+dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(), html=html)
 
-dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
-if dataset is not None:
-    for url in list(dataset):
-
-
-       """ dataset[url]['subtitle'] = subtitle
-        dataset[url]["text"] = text
-        dataset[url]["html"] = html"""
-
-
-    writer = FileWriter("data/news.csv")
-    writer.write(dataset)
+writer = FileWriter('news.csv')
+for data in dataset:
+    print('DATA', data)
+    writer.write(data)
