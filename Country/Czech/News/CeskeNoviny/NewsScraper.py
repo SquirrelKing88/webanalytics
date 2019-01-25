@@ -19,11 +19,6 @@ class NewsScraper(CommonNewsHandler):
 
         result = dict()
         for article in div_links:
-            # проверяем дату, чтоб достать новости только за один день:
-            #date_time = article.find('span', {'class': ['tag blue']}).text
-            #print(date_time)
-            #if date_time[:2] != '25':
-            #    break
             link = article.find('a')
             if link == None:
                 break
@@ -70,32 +65,12 @@ class NewsScraper(CommonNewsHandler):
 
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-        article = soup.find('div', {'class': 'box-article'})
-        print('article: ', article)
-        text = article.find_all('p')
+        text = soup.find('div', {'itemprop': 'articleBody'})
 
         if text:
-            full_text = ''
-            html_text = ''
-            for p in text:
-                html_p = p.prettify()
-                html_text += html_p + '\n'
-                p.extract()
-                [x.extract() for x in p.findAll('script')]
-                full_text += p.text
-            cleaned_text = full_text
-            #print('html_text: ', html_text, '\n')
-            #print('cleaned_text: ', cleaned_text, '\n')
-
+            [x.extract() for x in text.findAll('script')]
+            html_text = text.prettify()
+            cleaned_text = text.text
             return html_text, cleaned_text.strip()
         else:
             return None, None
-
-'''
-        news_div = soup.find('div', {'class': 'box-article'})
-
-        # delete javascript
-        [x.extract() for x in news_div.findAll('script')]
-
-        print(news_div.text.strip())
-'''
