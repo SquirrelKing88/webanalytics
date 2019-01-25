@@ -1,6 +1,4 @@
 from googletrans import Translator
-import nltk.data
-
 from LanguageProcessing.LanguageHandler import LanuageHandler
 
 
@@ -58,3 +56,8 @@ class GoogleTranslator:
             'translation_language': destination_language,
             'translation': translation
         }
+
+    def __get_translation_thread(self, original_text, destination_language='en'):
+
+        #TODO use Queue
+        return None

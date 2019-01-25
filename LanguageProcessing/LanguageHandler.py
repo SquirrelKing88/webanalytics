@@ -13,8 +13,12 @@ class LanuageHandler:
         'indonesian': 'id',
         'english': 'en',
         'russian': 'ru',
-        'icelandic': 'is'
-    #     TODO add languages
+        'icelandic': 'is',
+        'greek': 'el',
+        'polish': 'pl',
+        'german': 'de'
+
+        #TODO add languages
     }
 
     @staticmethod
