@@ -70,7 +70,8 @@ class NewsScraper(CommonNewsHandler):
 
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-        article = soup.find('div', itemprop='articleBody')
+        article = soup.find('div', {'class': 'box-article'})
+        print('article: ', article)
         text = article.find_all('p')
 
         if text:
@@ -80,10 +81,21 @@ class NewsScraper(CommonNewsHandler):
                 html_p = p.prettify()
                 html_text += html_p + '\n'
                 p.extract()
-                #[x.extract() for x in p.findall('script')] #extract убирает комменты
+                [x.extract() for x in p.findAll('script')]
                 full_text += p.text
             cleaned_text = full_text
+            #print('html_text: ', html_text, '\n')
+            #print('cleaned_text: ', cleaned_text, '\n')
 
             return html_text, cleaned_text.strip()
         else:
             return None, None
+
+'''
+        news_div = soup.find('div', {'class': 'box-article'})
+
+        # delete javascript
+        [x.extract() for x in news_div.findAll('script')]
+
+        print(news_div.text.strip())
+'''
