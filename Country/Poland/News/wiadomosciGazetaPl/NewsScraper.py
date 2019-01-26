@@ -76,9 +76,7 @@ class NewsScraper(CommonNewsHandler):
         for article in articles:
             result+=article.text
 
-        this=soup.find('html')
-
-        return result, this.prettify()
+        return result, soup.prettify()
 
 
 
