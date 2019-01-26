@@ -1,7 +1,6 @@
 from urllib.parse import urljoin
 from datetime import datetime
 from Scraper.CommonNewsHandler import CommonNewsHandler
-from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
 
@@ -12,34 +11,34 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-            div_news = soup.find_all('li', {'class':'entry'})
+        div_news = soup.find_all('li', {'class':'entry'})
 
-            if not div_news:
-                return None
+        if not div_news:
+            return None
 
-            result = dict()
+        result = dict()
 
-            for article in div_news:
-                link = article.find('a')
-                url = link['href']
+        for article in div_news:
+            link = article.find('a')
+            url = link['href']
 
-                if 'http' not in url:
-                    url = urljoin(url_root, url)
+            if 'http' not in url:
+                url = urljoin(url_root, url)
 
-                result[url] = CommonNewsHandler.get_article_row(url=url, title=link["title"])
-            return result
+            result[url] = CommonNewsHandler.get_article_row(url=url, title=link["title"])
+        return result
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-            article = soup.find('div', {'id':'gazeta_article_lead'})
+        article = soup.find('div', {'id':'gazeta_article_lead'})
 
-            return article.text
+        return article.text
 
     @staticmethod
-    def parse_article_datetime(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None, year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
