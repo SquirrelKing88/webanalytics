@@ -64,9 +64,10 @@ def getNewsDataset(pages=1,processors=1):
     return dataset
 
 start=time.time()
+with open("data/news.csv",'w')as file:
+    pass
 writer = FileWriter("data/news.csv")
 writer.write(getNewsDataset(pages=1,processors=23))
 end=time.time()
 print(end-start)
-
 
