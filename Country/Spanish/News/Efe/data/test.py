@@ -1,4 +1,4 @@
-from Country.Spanish.News.ElMundo.data.NewsScraper import NewsScraper
+from Country.Spanish.News.Efe.data.NewsScraper import NewsScraper
 from Requests.Requester import Requester
 from datetime import datetime
 from bs4 import BeautifulSoup

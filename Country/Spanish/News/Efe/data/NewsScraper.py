@@ -54,7 +54,7 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
         datetime = time.asctime()
-        return '25 Jan 2019 16:53:54'
+        return None
 
     @staticmethod
     def parse_article_text(html=None, soup=None):
