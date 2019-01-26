@@ -40,7 +40,7 @@ for url in list(dataset):
     html, text = NewsScraper.parse_article_text(html=html, soup=soup)
 
     # TODO scrape year month and day
-    date = datetime(year=2019, month=1, day=25)
+    date = datetime(year=2019, month=1, day=26)
     if hours:
         date = date.replace(hour=hours)
     if minutes:
@@ -51,8 +51,8 @@ for url in list(dataset):
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    #translation_result = translator.get_translation(text)
-    #dataset[url]["translation_en"] = translation_result['translation']
+    translation_result = translator.get_translation(text)
+    dataset[url]["translation_en"] = translation_result['translation']
 
 
 

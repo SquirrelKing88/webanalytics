@@ -67,13 +67,13 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
         text = soup.find('div', {'itemprop': 'articleBody'})
+        #text = text.find('p').find_all_previous('ul')
 
         if text:
             [x.extract() for x in text.findAll('script')]
             html_text = text.prettify()
             cleaned_text = text.text
-            print('html:', html_text)
-            print('cleaned:', cleaned_text)
+
             return html_text, cleaned_text.strip()
         else:
             return None, None

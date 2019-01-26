@@ -16,7 +16,8 @@ class LanuageHandler:
         'icelandic': 'is',
         'greek': 'el',
         'polish': 'pl',
-        'german': 'de'
+        'german': 'de',
+        'czech': 'cs'
     }
 
     @staticmethod
