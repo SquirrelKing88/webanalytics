@@ -49,7 +49,6 @@ def scrape_url(url):
 
     translation_result = translator.get_translation(text)
     dataset[url]["translation_en"] = translation_result['translation']
-    print('thread {} finished scrapping'.format(i))
 
 
 for i in range(len(list(dataset))):
