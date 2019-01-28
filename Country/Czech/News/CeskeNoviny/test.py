@@ -5,6 +5,7 @@ from Country.Czech.News.CeskeNoviny.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 from Translation.GoogleTranslator import  GoogleTranslator
 from Scraper.Writters.FileWritter import FileWriter
+from threading import Thread
 
 translator = GoogleTranslator()
 
@@ -23,7 +24,8 @@ dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(), htm
 
 
 # step 3. Loop over all urls and scrape article data
-for url in list(dataset):
+def scrape_url(url):
+    print('thread {} started scrapping'.format(i))
 
     # make new request to upload article data
     requester = Requester(url=url, retries=5)
@@ -35,16 +37,10 @@ for url in list(dataset):
 
     subtitle = NewsScraper.parse_article_subtitle(html=html, soup=soup)
 
-    hours, minutes = NewsScraper.parse_article_datetime(html=html, soup=soup)
+    date = NewsScraper.parse_article_datetime(html=html, soup=soup)
 
     html, text = NewsScraper.parse_article_text(html=html, soup=soup)
 
-    # TODO scrape year month and day
-    date = datetime(year=2019, month=1, day=26)
-    if hours:
-        date = date.replace(hour=hours)
-    if minutes:
-        date = date.replace(minute=minutes)
 
     dataset[url]['date'] = date
     dataset[url]['subtitle'] = subtitle
@@ -53,8 +49,15 @@ for url in list(dataset):
 
     translation_result = translator.get_translation(text)
     dataset[url]["translation_en"] = translation_result['translation']
+    print('thread {} finished scrapping'.format(i))
 
 
+for i in range(len(list(dataset))):
+    url = list(dataset)[i]
+    th = Thread(target=scrape_url, args=(url, ))
+    th.start()
+
+th.join()
 
 # step 4. Save dataset to folder
 writer = FileWriter("data/news.csv")
