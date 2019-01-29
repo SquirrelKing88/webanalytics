@@ -4,6 +4,7 @@ from Scraper.CommonNewsHandler import CommonNewsHandler
 from Requests.Requester import Requester
 import re
 from bs4 import BeautifulSoup
+from datetime import datetime
 
 class NewsScraper(CommonNewsHandler):
     """
@@ -41,11 +42,15 @@ class NewsScraper(CommonNewsHandler):
         date_time = soup.find('div', {'class': 'box-article-info'})
         time = date_time.find('span', {'itemprop': 'datePublished'}).text
 
-        line = re.search(r"\d{2}:\d{2}", time).group(0)
-        hours = line[:2]
-        minutes = line[3:]
-        # TODO
-        return int(hours), int(minutes)
+        line = re.search(r"\d{2}\.\d{2}\.\d{4}\,\s\d{2}\:\d{2}", time).group(0)
+        day = line[:2]
+        month = line[3:5]
+        year = line[6:10]
+        hour = line[12:14]
+        minute = line[15:]
+        second = 00
+        date = datetime(year=int(year), month=int(month), day=int(day), hour=int(hour), minute=int(minute), second=int(second))
+        return date
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
