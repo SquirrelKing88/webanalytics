@@ -16,12 +16,43 @@ class InstagramPostHandler:
         return {
                     "url": url,
                     "date": date,
-                    "title": title,
-                    "subtitle": subtitle,
+
+
                     "html": html,
-                    "text": text,
-                    "translation_en": translation
+                    "posts":
+                              {
+
+                                   1: {
+                                        "user":...,
+                                        "text":...,
+                                        "receivers":{},
+                                        "translation_en": translation
+                                      },
+                                  2: {
+                                      "user": ...,
+                                      "text": ...,
+                                      "receivers": {},
+                                      "translation_en": translation
+                                  }
+
+                              }
+
+                "reaction":{
+                        "like":{user1, user2},
+                    "deislike":{}
                 }
+
+
+
+
+
+                    "geo_location": None,
+
+
+
+                }
+
+
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
@@ -45,7 +76,10 @@ class InstagramPostHandler:
                                     }
                                     each row of dictionary could be created by  get_article_row method
 
+
         """
+
+        # url post
         return None
 
     @staticmethod
