@@ -1,9 +1,7 @@
-from datetime import datetime
-
 from Requests.Requester import Requester
 from Country.Germany.News.SPIEGEL.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
-from Translation.GoogleTranslator import GoogleTranslator
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writters.FileWritter import FileWriter
 
 translator = GoogleTranslator()
@@ -36,9 +34,9 @@ for url in list(dataset):
     dataset[url]["text"] = text
     dataset[url]["html"] = html
 
-    #translation_result = translator.get_translation(dataset[url]["text"])
-    #dataset[url]["translation_en"] = translation_result['translation']
-                                                                        #translator doesn't work
+    translation_result = translator.get_translation(dataset[url]["text"])
+    dataset[url]["translation_en"] = translation_result['translation']
+
 writer = FileWriter("data/news.csv")
 writer.write(dataset) #ERROR: File "C:/Users/Саша/Desktop/PyCh/webanalytics/Country/Germany/News/SPIEGEL/test.py", line 43, in <module>
                             #writer.write(dataset)
