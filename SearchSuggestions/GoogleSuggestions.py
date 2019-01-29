@@ -19,6 +19,8 @@ class GoogleSuggestions:
         """
         parameters ={"client":"chrome", "q":" ".join(words)}
 
+
+        # TODO catch exception
         response = self.__requester.make_get_request(parameters=parameters)
 
         return json.loads(response.data.decode('utf-8'))[1]
