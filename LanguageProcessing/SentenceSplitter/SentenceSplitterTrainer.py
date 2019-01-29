@@ -5,6 +5,8 @@ import wikipedia
 
 from LanguageProcessing.LanguageHandler import LanuageHandler
 
+# TODO major issue
+# TODO write file depents on python 2 or python 3
 
 class SentenceSplitterTrainer:
 
