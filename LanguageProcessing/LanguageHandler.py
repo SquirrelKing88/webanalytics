@@ -1,5 +1,6 @@
 import os
 import nltk
+import sys
 
 class LanuageHandler:
 
@@ -45,7 +46,11 @@ class LanuageHandler:
         language  = list(LanuageHandler.languages.keys())[list(LanuageHandler.languages.values()).index(language_abbreviation)]
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
-        pickle_file = os.path.join(dir_path,'SentenceSplitter','punkt',language.lower()+".pickle")
+
+        if sys.version_info.major==3:
+            pickle_file = os.path.join(dir_path,'SentenceSplitter','punkt','PY3',language.lower()+".pickle")
+        else:
+            pickle_file = os.path.join(dir_path, 'SentenceSplitter', 'punkt', language.lower() + ".pickle")
 
         return nltk.data.load('file:'+pickle_file)
 
