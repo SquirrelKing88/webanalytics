@@ -4,24 +4,39 @@ class TelegramPostHandler:
         """
         Create article-dictionary representation
 
-        :param url: article url
-        :param date: publication time
-        :param title: article title
-        :param subtitle: article subtitle
+        :param id:
+        :param author_id:
+        :param date: publication datetime
+
+
         :param html: html
         :param text: cleared text
-        :param translation: english translation
+
+        :param translation_en: english translation
+
+
         :return: dictionary
         """
         return {
-                    "url": url,
-                    "date": date,
-                    "title": title,
-                    "subtitle": subtitle,
-                    "html": html,
-                    "text": text,
-                    "translation_en": translation
-                }
+            # message_id
+            # from
+            # date
+            # chat
+            # forward_from
+            # forward_from_chat
+            # forward_from_message_id
+            # forward_date
+            # reply_to_message
+            # text
+            # entities
+            # caption_entities
+            # caption
+            # contact
+            # location
+
+        }
+
+
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):

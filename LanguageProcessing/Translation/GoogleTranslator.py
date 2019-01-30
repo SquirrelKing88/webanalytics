@@ -1,5 +1,5 @@
 from googletrans import Translator
-from LanguageProcessing.LanguageHandler import LanuageHandler
+from LanguageProcessing.LanguageHandler import LanguageHandler
 
 
 class GoogleTranslator:
@@ -20,19 +20,18 @@ class GoogleTranslator:
 
         if not original_text:
             return {
-            'original_language': None,
-            'original_text': original_text,
-            'translation_language': destination_language,
-            'translation': None
-        }
+                        'original_language': None,
+                        'original_text': original_text,
+                        'translation_language': destination_language,
+                        'translation': None
+                    }
 
 
         # TODO if not detected
         detected = self.__translator.detect(original_text[:100])
         original_language = detected.lang
 
-
-        tokenizer = LanuageHandler.get_tokenizer(original_language)
+        tokenizer = LanguageHandler.get_tokenizer(original_language)
         sentences = tokenizer.tokenize(original_text.strip())
 
         sentenses_count = len(sentences)
@@ -46,7 +45,7 @@ class GoogleTranslator:
 
             text_batch = sentences[max_sentence_count*batch:(batch+1)*max_sentence_count]
             translation_result = self.__translator.translate(" ".join(text_batch), dest=destination_language)
-            translation+=translation_result.text
+            translation += translation_result.text
 
 
 
@@ -56,3 +55,4 @@ class GoogleTranslator:
             'translation_language': destination_language,
             'translation': translation
         }
+

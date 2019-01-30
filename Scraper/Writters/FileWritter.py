@@ -26,9 +26,10 @@ class FileWriter(CommonWriter):
         """
         with open(self.filepath, mode='a+', encoding="utf-8") as file:
             for url in dictionary:
-                # TODO delete shallow copy
-                data = copy.copy(dictionary[url])
 
+                data = self.__scrub(dictionary[url])
+
+                #Format datatime
                 data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
 
                 json.dump(data, file)
@@ -36,3 +37,19 @@ class FileWriter(CommonWriter):
                 file.write("\n")
 
             file.flush()
+
+
+
+
+    def __scrub(self,json_data):
+        result = copy.deepcopy(json_data)
+
+        # Handle dictionaries. Scrub all values
+        if isinstance(json_data, dict):
+            for k,v in result.items():
+                result[k] = self.__scrub(v)
+        # Handle None
+        if json_data == None:
+            result = ''
+        # Finished scrubbing
+        return result
