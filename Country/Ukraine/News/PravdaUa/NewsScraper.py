@@ -74,6 +74,6 @@ class NewsScraper(CommonNewsHandler):
             cleaned_text = text[0]
             [x.extract() for x in cleaned_text.findAll('script')]
 
-            return None, cleaned_text.text.strip()
+            return html_text, cleaned_text.text.strip()
         else:
             return None, None
