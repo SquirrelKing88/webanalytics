@@ -1,7 +1,8 @@
 
 from telethon import TelegramClient, sync
 
-from Scraper.Writters.FileWritter import FileWriter
+import Scraper.Writters.FileWritter as fw
+
 from Telegram.ChannelScraper.Scraper import Scraper as d
 from telethon import functions
 
@@ -32,8 +33,9 @@ client = telegram.get_client()
 
 telegram_channel="amisnews"
 
-writer = FileWriter(("data/{}.csv").format(telegram_channel))
-writer.write(getPostsDataset(channel_name=telegram_channel))
+# TODO fix import
+# writer = fw.FileWriter(("data/{}.csv").format(telegram_channel))
+# writer.write(getPostsDataset(channel_name=telegram_channel))
 
 print(getPostsDataset(telegram_channel))
 
