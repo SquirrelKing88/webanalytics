@@ -1,5 +1,5 @@
 from googletrans import Translator
-from LanguageProcessing.LanguageHandler import LanuageHandler
+from LanguageProcessing.LanguageHandler import LanguageHandler
 
 
 class GoogleTranslator:
@@ -31,8 +31,7 @@ class GoogleTranslator:
         detected = self.__translator.detect(original_text[:100])
         original_language = detected.lang
 
-
-        tokenizer = LanuageHandler.get_tokenizer(original_language)
+        tokenizer = LanguageHandler.get_tokenizer(original_language)
         sentences = tokenizer.tokenize(original_text.strip())
 
         sentenses_count = len(sentences)

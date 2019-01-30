@@ -1,9 +1,16 @@
 import pickle
+
+import nltk
 from nltk.tokenize.punkt import PunktSentenceTokenizer
 from nltk import word_tokenize
+from nltk import data as dt
 import wikipedia
+from LanguageProcessing.LanguageHandler import LanguageHandler
 
-from LanguageProcessing.LanguageHandler import LanuageHandler
+dt.path.append(LanguageHandler.get_punctuation_model_path())
+
+
+
 
 
 class SentenceSplitterTrainer:
@@ -23,7 +30,7 @@ class SentenceSplitterTrainer:
         """
         Train new language
 
-        :return: trained file in punkt folder
+        :return: trained file in tokenizers folder
         """
         text = self.__collect_wiki_corpus(self.__language, self.__articles_count)
         self.__train_sentence_splitter(self.__language,text)
@@ -40,7 +47,7 @@ class SentenceSplitterTrainer:
         """
 
 
-        abbevation = LanuageHandler.get_language_abbreviation(language)
+        abbevation = LanguageHandler.get_language_abbreviation(language)
 
 
         wikipedia.set_lang(abbevation)
@@ -67,7 +74,7 @@ class SentenceSplitterTrainer:
 
     def __train_sentence_splitter(self,language,text):
         """
-        Train an NLTK punkt tokenizer for sentence splitting.
+        Train an NLTK tokenizers tokenizer for sentence splitting.
         http://www.nltk.org
 
         :param language name
@@ -78,12 +85,12 @@ class SentenceSplitterTrainer:
 
         # Train tokenizer
         # TODO create better implementation
-
+        # TODO python 2 and python 3 version
         tokenizer = PunktSentenceTokenizer()
         tokenizer.train(text)
 
         # Dump pickled tokenizer
-        pickle_file = "punkt/%s.pickle" % (language.lower())
+        pickle_file = "../tokenizers/%s.pickle" % (language.lower())
         out = open(pickle_file, "wb")
         pickle.dump(tokenizer, out)
         out.close()
