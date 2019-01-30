@@ -20,11 +20,11 @@ class GoogleTranslator:
 
         if not original_text:
             return {
-            'original_language': None,
-            'original_text': original_text,
-            'translation_language': destination_language,
-            'translation': None
-        }
+                        'original_language': None,
+                        'original_text': original_text,
+                        'translation_language': destination_language,
+                        'translation': None
+                    }
 
 
         # TODO if not detected
@@ -45,7 +45,7 @@ class GoogleTranslator:
 
             text_batch = sentences[max_sentence_count*batch:(batch+1)*max_sentence_count]
             translation_result = self.__translator.translate(" ".join(text_batch), dest=destination_language)
-            translation+=translation_result.text
+            translation += translation_result.text
 
 
 
@@ -56,7 +56,3 @@ class GoogleTranslator:
             'translation': translation
         }
 
-    def __get_translation_thread(self, original_text, destination_language='en'):
-
-        #TODO use Queue
-        return None
