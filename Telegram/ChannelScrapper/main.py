@@ -1,6 +1,5 @@
 from telethon import TelegramClient, sync
 from Telegram.ChannelScrapper.Scrapper import Scrapper
-from telethon import functions
 from Scraper.Writters.FileWritter import FileWriter
 
 
@@ -9,7 +8,6 @@ scrapper=Scrapper()
 def getPostsDataset(channel_name):
     dataset=dict()
     entity = client.get_entity(channel_name)
-
     for post in client.iter_messages(entity):
         id=scrapper.getPostId(post)
         dataset[id] = {'id': id,
