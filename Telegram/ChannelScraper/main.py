@@ -1,7 +1,7 @@
 
 from telethon import TelegramClient, sync
 
-import Scraper.Writters.FileWritter as fw
+# import Scraper.Writters.FileWritter as fw
 
 from Telegram.ChannelScraper.Scraper import Scraper as d
 from telethon import functions
