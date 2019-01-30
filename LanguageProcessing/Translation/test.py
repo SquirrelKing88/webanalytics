@@ -1,5 +1,5 @@
 
-from LanguageProcessing.Translation import  GoogleTranslator
+from LanguageProcessing.Translation.GoogleTranslator import  GoogleTranslator
 
 translator = GoogleTranslator()
 

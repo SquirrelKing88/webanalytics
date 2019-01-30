@@ -2,7 +2,7 @@ import os
 import nltk
 import sys
 
-class LanuageHandler:
+class LanguageHandler:
 
     languages = {
         'spanish': 'es',
@@ -34,7 +34,7 @@ class LanuageHandler:
         """
 
 
-        return LanuageHandler.languages[language.lower()]
+        return LanguageHandler.languages[language.lower()]
 
     @staticmethod
     def get_tokenizer(language_abbreviation):
@@ -43,14 +43,14 @@ class LanuageHandler:
         :param language_abbreviation: language
         :return: nltk tokenizer based on pickle file for choosen language
         """
-        language  = list(LanuageHandler.languages.keys())[list(LanuageHandler.languages.values()).index(language_abbreviation)]
+        language  = list(LanguageHandler.languages.keys())[list(LanguageHandler.languages.values()).index(language_abbreviation)]
 
-        dir_path = os.path.dirname(os.path.realpath(__file__))
-
-        if sys.version_info.major==3:
-            pickle_file = os.path.join(dir_path,'SentenceSplitter','punkt','PY3',language.lower()+".pickle")
-        else:
-            pickle_file = os.path.join(dir_path, 'SentenceSplitter', 'punkt', language.lower() + ".pickle")
+        pickle_file = os.path.join(LanguageHandler.get_punctuation_model_path(), "{}.pickle".format(language.lower()))
 
         return nltk.data.load('file:'+pickle_file)
 
+    @staticmethod
+    def get_punctuation_model_path():
+        dir_path = os.path.dirname(os.path.realpath(__file__))
+
+        return os.path.join(dir_path, 'Models', 'Punctuation', 'tokenizers', 'punkt')
