@@ -1,7 +1,7 @@
 from Requests.Requester import Requester
 from Country.Ukraine.News.PravdaUa.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
-from LanguageProcessing.Translation import  GoogleTranslator
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writters.FileWritter import FileWriter
 
 translator = GoogleTranslator()
