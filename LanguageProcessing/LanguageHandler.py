@@ -53,9 +53,4 @@ class LanguageHandler:
     def get_punctuation_model_path():
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-        path = os.path.join(dir_path, 'Models', 'Punctuation', 'tokenizers', 'punkt')
-
-        if sys.version_info.major == 3:
-            path = os.path.join(path, 'PY3')
-
-        return path
+        return os.path.join(dir_path, 'Models', 'Punctuation', 'tokenizers', 'punkt')
