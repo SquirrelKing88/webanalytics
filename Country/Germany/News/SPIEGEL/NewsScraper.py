@@ -100,7 +100,13 @@ class NewsScraper(CommonNewsHandler):
             date = datetime(year, month, day, hours, minutes, seconds)
 
         else:
-            date = None
+            year = 1111
+            month = 1
+            day = 1
+            hours = 11
+            minutes = 11
+            seconds = 11
+            date = datetime(year, month, day, hours, minutes, seconds)
 
         return date
 
