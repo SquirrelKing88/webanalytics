@@ -45,7 +45,7 @@ class LanguageHandler:
         """
         language  = list(LanguageHandler.languages.keys())[list(LanguageHandler.languages.values()).index(language_abbreviation)]
 
-        pickle_file = os.path.join(LanguageHandler.get_punctuation_model_path(), "%s.pickle".format(language.lower()))
+        pickle_file = os.path.join(LanguageHandler.get_punctuation_model_path(), "{}.pickle".format(language.lower()))
 
         return nltk.data.load('file:'+pickle_file)
 
