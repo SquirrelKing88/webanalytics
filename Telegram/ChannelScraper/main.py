@@ -1,5 +1,5 @@
 from Telegram.ChannelScraper.PostScraper import Scraper
-from Scraper.Writers.FileWriter import FileWriter
+from Scraper.Writters.FileWritter import FileWritter
 from Telegram.TelegramHandler import TelegramHandler
 
 
@@ -56,7 +56,7 @@ client = telegram.get_client()
 
 telegram_channel="amisnews"
 
-writer = FileWriter(("data/{}.csv").format(telegram_channel))
+writer = FileWritter(("data/{}.csv").format(telegram_channel))
 writer.write(getPostsDataset(channel_name=telegram_channel))
 #writer.write(getLastPostsDataset(channel_name=telegram_channel,posts=10))
 #writer.write(getPostsToIdDataset(channel_name=telegram_channel,stop_id=100))

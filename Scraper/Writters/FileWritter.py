@@ -1,9 +1,9 @@
-from Scraper.Writers.CommonWriter import CommonWriter
+from Scraper.Writters.CommonWriter import CommonWriter
 import json
 import copy
 
 
-class FileWriter(CommonWriter):
+class FileWritter(CommonWriter):
     """
     Write dictionary to file
     """
