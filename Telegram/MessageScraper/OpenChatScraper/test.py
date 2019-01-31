@@ -1,25 +1,19 @@
 from telethon import TelegramClient, sync
 from Telegram.MessageScraper.OpenChatScraper.ChatScraper import ChatScraper
+from Scraper.Writters.FileWritter import FileWriter
 
 channel_name = '@primat_chat'
-api_id = 529478
-api_hash = 'b1f634fd04f304a28e021babb434bfc7'
+api_id = 688663
+api_hash = 'f15cce9a8c45a05c2b80ff878296d832'
 scraper = ChatScraper(api_id=api_id, api_hash=api_hash)
 dataset = dict()
-counter = 0
+limit = 3000
 
 for index, item in enumerate(scraper.iter_chat_dataset(channel_name=channel_name)):
     dataset[item['id']] = item
+    if index >= limit:
+        break
 
-    if item['text']:
-        pass
-    else:
-        counter += 1
-
-    if not (index+1) % 1000:
-        print('No text messages: ', counter)
-        if input('Press enter to continue') == '':
-            counter = 0
-            continue
-        else:
-            break
+print(dataset)
+#f = FileWriter('data/messages.csv')
+#f.write(dataset)
