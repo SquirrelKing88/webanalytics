@@ -7,10 +7,13 @@ from bs4 import BeautifulSoup
 from urllib3 import ProxyManager, make_headers, PoolManager, disable_warnings
 from selenium import webdriver
 
+from Requests.SiteRegistration import IRegistration
+
+
 class InfinityRequester:
 
     def __init__(self, url,parent_element, parent_element_classes, child_element, child_element_classes,
-                 url_classes=None):
+                 url_classes=None, registration=None):
         """
 
            :param url: resourse
@@ -18,6 +21,7 @@ class InfinityRequester:
            :param parent_element_classes: list of classes
            :param child_element: tag name
            :param child_element_classes: list of classes
+           :param registration: IRegistration instance
        """
 
 
@@ -30,6 +34,10 @@ class InfinityRequester:
         options.add_argument('window-size=1200x400')  # optional
 
         self.__browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)
+
+        if isinstance(registration, IRegistration):
+            registration.register(self.__browser)
+
         self.__url = url
 
         self.__parent_element=parent_element

@@ -44,6 +44,8 @@ class Requester:
             options = webdriver.ChromeOptions()
             options.add_argument('headless')
             options.add_argument('window-size=1200x600')  # optional
+            prefs = {"profile.default_content_setting_values.notifications": 2}
+            options.add_experimental_option("prefs", prefs)
 
             self.__browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)
 
