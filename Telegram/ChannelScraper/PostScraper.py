@@ -13,7 +13,9 @@ class Scraper:
 
     @staticmethod
     def getPostForwardedFrom(post):
-        return post.fwd_from
+        if post.fwd_from:
+            return post.fwd_from.channel_id
+        return None
 
     @staticmethod
     def getPostMedia(post):
