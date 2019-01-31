@@ -40,6 +40,8 @@ class IInfo:
                             #TODO
                           }
 
+        #self.__views = int    count of views
+
         self.__translation = {
                                 'en': None
                              }
