@@ -1,6 +1,6 @@
 from telethon import TelegramClient, sync
 from Telegram.MessageScraper.OpenChatScraper.ChatScraper import ChatScraper
-from Scraper.Writters.FileWritter import FileWriter
+from Scraper.Writers.FileWriter import FileWriter
 
 channel_name = '@primat_chat'
 api_id = 688663
@@ -15,5 +15,5 @@ for index, item in enumerate(scraper.iter_chat_dataset(channel_name=channel_name
         break
 
 print(dataset)
-#f = FileWriter('data/messages.csv')
-#f.write(dataset)
+f = FileWriter('data/messages.csv')
+f.write(dataset)

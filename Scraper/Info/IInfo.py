@@ -15,7 +15,7 @@ class IInfo:
         self.__description = None
         self.__tags = set()
         self.__raw_data = None
-        self.__text = None
+        self.__text = None  #retrieve it from Telegram text
 
         # facebook, twitter, instagram, news, telegram
         self.__source_id = None

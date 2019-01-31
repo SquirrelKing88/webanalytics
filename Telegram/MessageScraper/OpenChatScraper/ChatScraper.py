@@ -1,5 +1,5 @@
 from telethon import TelegramClient, sync
-from Telegram.MessageScraper.Scraper import Scraper
+from Telegram.MessageScraper.PostScraper import Scraper
 
 
 class ChatScraper:
