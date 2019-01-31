@@ -1,6 +1,10 @@
-from telethon.sessions import StringSession
 from telethon import TelegramClient, sync
+
 import os
+from Telegram.ChannelScraper.Scraper import Scraper as d
+from telethon import functions
+from telethon.sessions import StringSession
+
 
 class TelegramHandler:
 
