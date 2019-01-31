@@ -1,7 +1,7 @@
 import json
 import copy
 
-from Scraper.Writters.CommonWriter import CommonWriter
+from Scraper.Writers.CommonWriter import CommonWriter
 
 
 class FileWriter(CommonWriter):
@@ -27,9 +27,12 @@ class FileWriter(CommonWriter):
         with open(self.filepath, mode='a+', encoding="utf-8") as file:
             for url in dictionary:
 
-                data = self.__scrub(dictionary[url])
+                # data = self.__scrub(dictionary[url])
+                data = dictionary[url]
 
+                # TODO create class DataRow with methods format_field and get_dictionary
                 #Format datatime
+
                 data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
 
                 json.dump(data, file)
