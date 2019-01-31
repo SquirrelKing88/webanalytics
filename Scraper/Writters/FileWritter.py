@@ -4,7 +4,7 @@ import copy
 from Scraper.Writters.CommonWriter import CommonWriter
 
 
-class FileWriter(CommonWriter):
+class FileWritter(CommonWriter):
     """
     Write dictionary to file
     """
