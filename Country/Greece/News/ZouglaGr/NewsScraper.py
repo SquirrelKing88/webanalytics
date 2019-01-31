@@ -13,32 +13,27 @@ class NewsScraper(CommonNewsHandler):
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
+        # The main difference of this branch is this function. Now it is a generator.
+        # Thus we don't need RAM for storing dataset as we are returning it by elements.
+        # But it makes sense only when this function returns a really huge amount of data.
+        # Though it won't do it simply because this function scrapes one HTML page with about 20 links we need.
+        # So most likely this code is useless :)
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
         news = soup.findAll('div', {'class': 'blog_articles'})
 
-        result = dict()
-
         for article in news:
             link = article.find('h1').find('a')
             url = link['href']
-            title = link.text
-            subtitle = article.find('div', {'class': 'col-xs-8'}).text
-
             if 'http' not in url:
                 url = urljoin(url_root, url)
 
-            result[url] = CommonNewsHandler.get_article_row(url=url, title=title, subtitle=subtitle)
-
-        return result
-
-
-
+            yield url
 
 
     @staticmethod
-    def parse_article_datetime(html=None, soup=None, year=None, month=None, day=None, hours=None, minutes=None, seconds=None):
+    def parse_article_datetime(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
@@ -46,20 +41,16 @@ class NewsScraper(CommonNewsHandler):
 
         result = datetime.strptime(date[:-1:], "%Y-%m-%dT%H:%M:%S")
 
-        if year:
-            date.replace(year=year)
-        if month:
-            date.replace(month=month)
-        if day:
-            date.replace(day=day)
-        if hours:
-            date.replace(hours=hours)
-        if minutes:
-            date.replace(minutes=minutes)
-        if seconds:
-            date.replace(seconds=seconds)
-
         return result
+
+    @staticmethod
+    def parse_article_title(html=None, soup=None):
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+        title = soup.find('h1', {'class': 'article_title'}).text
+
+        return title
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
