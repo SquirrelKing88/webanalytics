@@ -4,10 +4,16 @@ from Requests.Requester import Requester
 requester = Requester(url="http://google.com")
 response = requester.make_get_request({'q': 'ok'})
 
-html = response.data.decode('utf-8')
-print(Requester.run_html(html))
+html = response.get_data()
+status = response.get_status()
+print("Status {0}\nData {1}".format(status, html))
 
 
-requester = Requester(url="http://vk.com", proxy="87.181.249.204")
+
+
+requester = Requester(url="https://www.instagram.com/p/BtRzmCkA2sT/", run_html=True)
 response = requester.make_get_request()
-print(response.data.decode('utf-8'))
+
+html = response.get_data()
+status = response.get_status()
+print("Status {0}\nData {1}".format(status, html))
