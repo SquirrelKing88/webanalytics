@@ -11,8 +11,8 @@ class ChatScraper:
         self.client.disconnect()
 
     def get_chat_dataset(self, channel_name, limit):
-        chat = self.client.get_entity(channel_name, limit=limit)
-        batch = self.client.get_messages(chat)
+        chat = self.client.get_entity(channel_name)
+        batch = self.client.get_messages(chat,  limit=limit)
         dataset = dict()
         scrapper = Scraper()
         for post in batch:
