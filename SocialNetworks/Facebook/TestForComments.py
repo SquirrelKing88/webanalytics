@@ -18,6 +18,12 @@ for url in list(dataset):
     dir_path = os.path.dirname(os.path.realpath('chromedriver.exe'))
     chromedriver = os.path.join(dir_path, 'drivers', 'chromedriver_win')
     options = webdriver.ChromeOptions()
+
+    chrome_options = webdriver.ChromeOptions()
+    prefs = {"profile.default_content_setting_values.notifications" : 2}
+    chrome_options.add_experimental_option("prefs",prefs)
+    driver = webdriver.Chrome(chrome_options=chrome_options)
+
     options.add_argument('headless')
     options.add_argument('window-size=1920x1080')
     driver.get("https://www.facebook.com/")
@@ -25,10 +31,11 @@ for url in list(dataset):
     driver.find_element_by_css_selector("#pass").send_keys("lbteam2018")
     driver.find_element_by_css_selector("#u_0_2").click()
     driver.get(url)
-    actions = ActionChains(driver)
+
+    '''actions = ActionChains(driver)
     actions.move_by_offset(372, 79).perform()
     time.sleep(20)
-    actions.click().perform()
+    actions.click().perform()'''
 
     r = requests.get(url)
     print(r.text)
