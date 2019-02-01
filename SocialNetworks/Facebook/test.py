@@ -1,19 +1,14 @@
-
 from selenium import webdriver
-
+from bs4 import BeautifulSoup
 import os
 import pickle
-
-from datetime import datetime
-
-from Requests.Requester import Requester
-from SocialNetworks.Facebook.UserPostScraping import PostsScraper
-from bs4 import BeautifulSoup
+import re
 from Requests.InfinityScroller import InfinityScroller
 from Requests.WebBrowser.SiteRegistration.CookieRegistration import CookieRegistration
 from Requests.WebBrowser.WebAction.ActionScroll import ActionScroll
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 
-url="https://www.facebook.com/profile.php?id=100011689171425&fref=pb&hc_location=friends_tab"
+my_page="https://www.facebook.com/profile.php?id=100011689171425&fref=pb&hc_location=friends_tab"
 
 
 # README!!!!
@@ -26,35 +21,58 @@ cookies = pickle.load(open("config/cookies.pkl", "rb"))
 registration = CookieRegistration(url="https://www.facebook.com/", cookies=cookies)
 
 scroll_action = ActionScroll()
-scroller = InfinityScroller(url=url, actions=[scroll_action], scroll_pause=2,registration=registration)
+scroller = InfinityScroller(url=my_page, actions=[scroll_action], scroll_pause=2,registration=registration)
 
-requester = Requester(url=url, retries=5, sleep_time=3)
-response = requester.make_get_request()
 html = scroller.scroll()
-
 
 while html is not None:
     html = scroller.scroll()
-    print(html)
 
-dataset = PostsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
+    link_class=['_5pcp', '_5lel', '_2jyu', '_232_']
+    author_class=['_14f3', '_14f5', '_5pbw', '_5vra']
+    post_class=['5pcb', '_4b0l', '_2q8l']
+
+    soup=BeautifulSoup(html)
+
+    div_links=soup.find_all('div',{'class':link_class})
+    div_author=soup.find_all(('h5',{'class':author_class}))
+    div_post = soup.find_all('div', {'class':post_class})
 
 
-# pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
-#push!!!!
 
-#scroll
-# while driver.find_element_by_tag_name('div'):
-#     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-#     Divs=driver.find_element_by_tag_name('div').text
-#
-#
-#     if 'End of Results' in Divs:
-#         print ('end')
-#         break
-#     else:
-#         continue
-# result=list()
-dataset.encode('utf-8')
-print(dataset)
+    for authors in div_author:
+        author = authors.find('a')
+        name = author['href']
+
+    for posts in div_post:
+        text_html=posts.find('div')
+        text=str(posts.find('p'))
+        cleaned_text1=text.replace('<p>','')
+        cleaned_text2 = cleaned_text1.replace('</p>', '')
+        cleaned_text = cleaned_text2.replace('<br/>', '')
+        translator = GoogleTranslator()
+        result1 = translator.get_translation(cleaned_text)
+        translation_en=result1['translation']
+
+    for links in div_links:
+        link = links.find('a')
+        url = link['href']
+        data=links.find('abbr')
+        datatime=data['title']
+
+        result=dict()
+
+
+        if url not in result:
+            result[url]={
+                         'author':name,
+                         'data':datatime,
+                         'text':cleaned_text,
+                         'translation_en':translation_en}
+
+
+
+        print(result)
+
+

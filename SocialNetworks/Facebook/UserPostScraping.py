@@ -18,8 +18,7 @@ class PostsScraper(CommonNewsHandler):
 
     @staticmethod
     def parse_post_list(url_root=None, html=None, soup=None):
-        if soup is None:
-            soup = BeautifulSoup(html, 'html.parser')
+
 
         div_links=soup.find_all('div',{'class':PostsScraper.link_class})
         if not div_links:
