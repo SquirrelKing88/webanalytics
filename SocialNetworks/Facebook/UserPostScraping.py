@@ -1,9 +1,9 @@
 from urllib.parse import urljoin
 from datetime import datetime
-from Scraper.PostsHandler import CommonPostsHandler
+from Scraper.CommonNewsHandler import CommonNewsHandler
 from bs4 import BeautifulSoup
 
-class PostsScraper(CommonPostsHandler):
+class PostsScraper(CommonNewsHandler):
     """
            Inherit CommonUserPostsHandler for www.facebook.com
            """
@@ -33,7 +33,7 @@ class PostsScraper(CommonPostsHandler):
             if 'http' not in url:
                  url = urljoin(url_root, url)
 
-            result[url] = CommonPostsHandler.get_article_row(url=url, title=link.text)
+            result[url] = CommonNewsHandler.get_article_row(url=url, title=link.text)
 
         return result
 
