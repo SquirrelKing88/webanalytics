@@ -17,10 +17,7 @@ class InfinityScroller:
         self.__actions = actions
         self.__scroll_pause = scroll_pause
 
-        self.__selenium = SeleniumBrowser()
-
-        if registration:
-            registration.register(self.__browser)
+        self.__selenium = SeleniumBrowser(registration=registration)
 
         response = self.__selenium.make_get_request(self.__url)
         self.__html_content = response.get_data()
