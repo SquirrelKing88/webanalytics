@@ -3,10 +3,9 @@ from random import randint
 from urllib.parse import urlparse
 
 from urllib3 import ProxyManager, make_headers, PoolManager, disable_warnings
-from selenium import webdriver
-import os
 
 from Requests.Response import Response
+from Requests.WebBrowser.SeleniumBrowser import SeleniumBrowser
 
 disable_warnings()
 
@@ -37,18 +36,7 @@ class Requester:
         self.__run_html = run_html
 
         if (self.__run_html):
-            # TODO load driver depend on OS type
-            dir_path = os.path.dirname(os.path.realpath(__file__))
-            chromedriver = os.path.join(dir_path, 'drivers', 'chromedriver_win')
-
-            options = webdriver.ChromeOptions()
-            options.add_argument('headless')
-            options.add_argument('window-size=1200x600')  # optional
-            prefs = {"profile.default_content_setting_values.notifications": 2}
-            options.add_experimental_option("prefs", prefs)
-
-            self.__browser = webdriver.Chrome(executable_path=chromedriver, chrome_options=options)
-
+            self.__selenium = SeleniumBrowser()
 
         if proxy:
             # TODO make proxy authorization
@@ -57,10 +45,7 @@ class Requester:
         else:
             self.__http = PoolManager()
 
-    def __del__(self):
-        if (self.__run_html):
 
-            self.__browser.close()
 
 
     def make_get_request(self, parameters=None):
@@ -89,8 +74,7 @@ class Requester:
                 # Success
                 if response.status == 200:
                     if (self.__run_html):
-                        self.__browser.get("data:text/html;charset=utf-8,{html_content}".format(html_content=html_content))
-                        html_content = self.__browser.page_source
+                        html_content = self.__selenium.execute_html(html_content)
 
                     break
 

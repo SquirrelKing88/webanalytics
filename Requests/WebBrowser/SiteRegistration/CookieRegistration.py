@@ -1,4 +1,4 @@
-from Requests.SiteRegistration.IRegistration import IRegistration
+from Requests.WebBrowser.SiteRegistration.IRegistration import IRegistration
 
 
 class CookieRegistration(IRegistration):
