@@ -1,16 +1,21 @@
 from Telegram.ChannelScraper.PostScraper import Scraper
-from Scraper.Writters.FileWritter import FileWritter
+from Scraper.Writers.FileWriter import FileWriter
 from Telegram.TelegramHandler import TelegramHandler
-
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 
 
 scrapper=Scraper()
+translator=GoogleTranslator()
 
 def getPost(post, dataset):
+    text=scrapper.getPostMessage(post)
+    #ation_result = translator.get_translation(text)
+    #print(translation_result['translation'])
     dataset[scrapper.getPostId(post)] = {'id': scrapper.getPostId(post),
                                          'date': scrapper.getPostDate(post),
                                          'text': scrapper.getPostMessage(post),
                                          'forwarded_from': scrapper.getPostForwardedFrom(post),
+                                         #'translation_en': translation_result['translation'],
                                          'views': scrapper.getPostViews(post),
                                          'edit_date': scrapper.getPostEditDate(post)
                                          }
@@ -54,9 +59,9 @@ telegram = TelegramHandler()
 
 client = telegram.get_client()
 
-telegram_channel="amisnews"
+telegram_channel="biochemistry_memes"
 
-writer = FileWritter(("data/{}.csv").format(telegram_channel))
+writer = FileWriter(("data/{}.csv").format(telegram_channel))
 writer.write(getPostsDataset(channel_name=telegram_channel))
 #writer.write(getLastPostsDataset(channel_name=telegram_channel,posts=10))
 #writer.write(getPostsToIdDataset(channel_name=telegram_channel,stop_id=100))
