@@ -1,5 +1,5 @@
+async-generator==1.10
 beautifulsoup4==4.7.1
-googletrans
 certifi==2018.11.29
 chardet==3.0.4
 elasticsearch==6.3.1
@@ -7,9 +7,18 @@ googlemaps==3.0.2
 googletrans==2.4.0
 idna==2.8
 nltk==3.4
+pyaes==1.6.1
+pyasn1==0.4.5
+python-dateutil==2.7.5
 requests==2.21.0
+rsa==4.0
+selenium==3.141.0
 singledispatch==3.4.0.3
 six==1.12.0
 soupsieve==1.7.2
+Telethon==1.5.4
+timeunit==1.1.0
 urllib3==1.24.1
+watson-developer-cloud==2.5.4
+websocket-client==0.48.0
 wikipedia==1.4.0
