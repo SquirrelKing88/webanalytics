@@ -11,8 +11,9 @@ def getPost(post, dataset):
     text=scrapper.getPostMessage(post)
     try:
         translation_result = translator.get_translation(text)
+        print(translation_result["translation"])
     except:
-        print("Translation error in "+text)
+        #print("Translation error in "+text)
         translation_result={'translation':None}
     dataset[scrapper.getPostId(post)] = {'id': scrapper.getPostId(post),
                                          'date': scrapper.getPostDate(post),
@@ -57,14 +58,37 @@ def getPostsDataset(channel_name):
 
     return dataset
 
+from watson_developer_cloud import PersonalityInsightsV3
+import json
+
+def insights(dataset):
+    personality_insights = PersonalityInsightsV3(
+        version='2018-08-01',
+        iam_apikey='3SxyLvrknAbDrpuUwKZAhkyx6Y8pfYbSRUBrpM1x5yCW',
+        url='https://gateway-lon.watsonplatform.net/personality-insights/api'
+    )
+
+    data={'contentItems':[]}
+    for id in dataset:
+        data['contentItems'].append({'content':dataset[id]['translation_en']})
+    print(data)
+    profile = personality_insights.profile(
+        data,
+        content_type='application/json',
+        consumption_preferences=True,
+        raw_scores=True
+    ).get_result()
+
+    print(json.dumps(profile, indent=2))
 
 telegram = TelegramHandler()
 
 client = telegram.get_client()
 
-telegram_channel="amisnews"
+telegram_channel="dekanat_fpm"
 
 writer = FileWriter(("data/{}.csv").format(telegram_channel))
-writer.write(getPostsDataset(channel_name=telegram_channel))
+insights(getPostsDataset(channel_name=telegram_channel))
+#writer.write(getPostsDataset(channel_name=telegram_channel))
 #writer.write(getLastPostsDataset(channel_name=telegram_channel,posts=10))
 #writer.write(getPostsToIdDataset(channel_name=telegram_channel,stop_id=100))
