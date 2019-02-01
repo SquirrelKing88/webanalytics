@@ -1,38 +1,48 @@
-from Facebook.UserPostScraping import PostsScraper
-from Requests.Requester import Requester
-from threading import Thread
-import time
-from bs4 import BeautifulSoup
-from selenium import webdriver
-from Scraper.Writters.FileWritter import FileWriter
-from selenium.webdriver.chrome.options import Options
 
+from selenium import webdriver
+
+import os
+import pickle
+
+from Requests.InfinityScroller import InfinityScroller
+from Requests.WebBrowser.SiteRegistration.CookieRegistration import CookieRegistration
+from Requests.WebBrowser.WebAction.ActionScroll import ActionScroll
 
 my_page="https://www.facebook.com/profile.php?id=100011689171425&fref=pb&hc_location=friends_tab"
 
-driver = webdriver.Chrome('chromedriver.exe')
-dir_path = os.path.dirname(os.path.realpath('chromedriver.exe'))
-chromedriver = os.path.join(dir_path, 'drivers', 'chromedriver_win')
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
-options.add_argument('window-size=1200x400')
-driver.get("https://www.facebook.com/")
-driver.find_element_by_css_selector("#email").send_keys("lb.team.user@gmail.com")
-driver.find_element_by_css_selector("#pass").send_keys("lbteam2018")
-driver.find_element_by_css_selector("#u_0_2").click()
-driver.get(my_page)
+
+# README!!!!
+# goto SeleniumBrowser look line 24 and comment but not commit SeleniumBrowser file
+
+
+
+cookies = pickle.load(open("config/cookies.pkl", "rb"))
+
+registration = CookieRegistration(url="https://www.facebook.com/", cookies=cookies)
+
+scroll_action = ActionScroll()
+scroller = InfinityScroller(url=my_page, actions=[scroll_action], scroll_pause=2,registration=registration)
+
+html = scroller.scroll()
+print(html)
+while html is not None:
+    html = scroller.scroll()
+    print(html)
+
+
+# pickle.dump( driver.get_cookies() , open("cookies.pkl","wb"))
 
 #push!!!!
 
 #scroll
-while driver.find_element_by_tag_name('div'):
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    Divs=driver.find_element_by_tag_name('div').text
-
-
-    if 'End of Results' in Divs:
-        print ('end')
-        break
-    else:
-        continue
-result=list()
+# while driver.find_element_by_tag_name('div'):
+#     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+#     Divs=driver.find_element_by_tag_name('div').text
+#
+#
+#     if 'End of Results' in Divs:
+#         print ('end')
+#         break
+#     else:
+#         continue
+# result=list()
