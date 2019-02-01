@@ -9,13 +9,16 @@ translator=GoogleTranslator()
 
 def getPost(post, dataset):
     text=scrapper.getPostMessage(post)
-    #ation_result = translator.get_translation(text)
-    #print(translation_result['translation'])
+    try:
+        translation_result = translator.get_translation(text)
+    except:
+        print("Translation error in "+text)
+        translation_result={'translation':None}
     dataset[scrapper.getPostId(post)] = {'id': scrapper.getPostId(post),
                                          'date': scrapper.getPostDate(post),
                                          'text': scrapper.getPostMessage(post),
                                          'forwarded_from': scrapper.getPostForwardedFrom(post),
-                                         #'translation_en': translation_result['translation'],
+                                         'translation_en': translation_result['translation'],
                                          'views': scrapper.getPostViews(post),
                                          'edit_date': scrapper.getPostEditDate(post)
                                          }
@@ -59,7 +62,7 @@ telegram = TelegramHandler()
 
 client = telegram.get_client()
 
-telegram_channel="biochemistry_memes"
+telegram_channel="amisnews"
 
 writer = FileWriter(("data/{}.csv").format(telegram_channel))
 writer.write(getPostsDataset(channel_name=telegram_channel))
