@@ -32,7 +32,7 @@ while html is not None:
     author_class=['_14f3', '_14f5', '_5pbw', '_5vra']
     post_class=['5pcb', '_4b0l', '_2q8l']
 
-    soup=BeautifulSoup(html)
+    soup=BeautifulSoup(html,features="html.parser")
 
     div_links=soup.find_all('div',{'class':link_class})
     div_author=soup.find_all(('h5',{'class':author_class}))
@@ -46,33 +46,55 @@ while html is not None:
         name = author['href']
 
     for posts in div_post:
-        text_html=posts.find('div')
-        text=str(posts.find('p'))
-        cleaned_text1=text.replace('<p>','')
-        cleaned_text2 = cleaned_text1.replace('</p>', '')
-        cleaned_text = cleaned_text2.replace('<br/>', '')
-        translator = GoogleTranslator()
-        result1 = translator.get_translation(cleaned_text)
-        translation_en=result1['translation']
-
-    for links in div_links:
-        link = links.find('a')
-        url = link['href']
-        data=links.find('abbr')
-        datatime=data['title']
-
-        result=dict()
 
 
-        if url not in result:
-            result[url]={
-                         'author':name,
-                         'data':datatime,
-                         'text':cleaned_text,
-                         'translation_en':translation_en}
+        # search for link
+        # if not link skip
 
 
 
-        print(result)
+        text_html=posts.find('div', {'class':['userContent']})
+
+        link_div = posts.find('div', {'class': link_class})
+
+
+        # link = link_div.find('a')
+        # try:
+        #     url = link['href']
+        #     data = link.find('abbr')
+        #     datatime = data['title']
+        #
+        #     print(url,ent=' ')
+        # except Exception as e:
+        #     # print('----------------------------------------------------------------------------------',link)
+        #     pass
+
+        # TODO delete spaces or \n\n\n\n\n\n
+        print(text_html.get_text().strip())
+        # translator = GoogleTranslator()
+        # translation = translator.get_translation(text)
+        # translation_en = None#translation['translation']
+        #
+
+
+    # for links in div_links:
+    #     link = links.find('a')
+    #     url = link['href']
+    #     data=links.find('abbr')
+    #     datatime=data['title']
+    #
+    #     result=dict()
+    #
+    #
+    #     if url not in result:
+    #         result[url]={
+    #                      'author':name,
+    #                      'data':datatime,
+    #                      'text':cleaned_text,
+    #                      'translation_en':translation_en}
+    #
+    #
+    #
+    #     print(result)
 
 
