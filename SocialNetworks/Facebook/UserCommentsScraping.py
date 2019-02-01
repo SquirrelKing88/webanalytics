@@ -9,7 +9,6 @@ class UserCommentsScraper():
     def parse_post_comments(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-
         comments=soup.find('ul')
         print(comments)
 

@@ -7,14 +7,20 @@ import selenium
 import os
 import requests
 import time
+import pickle
 
-url="https://www.facebook.com/barackobama/photos/a.10155401589571749/10156387081516749/?type=3&theater"
+from Requests.InfinityScroller import InfinityScroller
+from Requests.WebBrowser.SiteRegistration.CookieRegistration import CookieRegistration
+from Requests.WebBrowser.WebAction.ActionScroll import ActionScroll
+
+
+url="https://www.facebook.com/permalink.php?story_fbid=449217705477865&id=100011689171425"
 
 dataset = [url]
 
 for url in list(dataset):
 
-    driver = webdriver.Chrome('chromedriver.exe')
+    '''driver = webdriver.Chrome('chromedriver.exe')
     dir_path = os.path.dirname(os.path.realpath('chromedriver.exe'))
     chromedriver = os.path.join(dir_path, 'drivers', 'chromedriver_win')
     options = webdriver.ChromeOptions()
@@ -32,31 +38,29 @@ for url in list(dataset):
     driver.find_element_by_css_selector("#u_0_2").click()
     driver.get(url)
 
-    '''actions = ActionChains(driver)
+    actions = ActionChains(driver)
     actions.move_by_offset(372, 79).perform()
     time.sleep(20)
     actions.click().perform()'''
 
-    r = requests.get(url)
-    print(r.text)
 
-    #scroll
-    while driver.find_element_by_tag_name('div'):
-        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-    Divs=driver.find_element_by_tag_name('div').text
-
-    if 'End of Results' in Divs:
-        print ('end')
-        break
-    else:
-        continue
+    # README!!!!
+    # goto SeleniumBrowser look line 24 and comment but not commit SeleniumBrowser file
 
 
 
+    cookies = pickle.load(open("config/cookies.pkl", "rb"))
 
+    registration = CookieRegistration(url="https://www.facebook.com/", cookies=cookies)
+
+    scroll_action = ActionScroll()
+    scroller = InfinityScroller(url=url, actions=[scroll_action], scroll_pause=2,registration=registration)
+
+    html = scroller.scroll()
+    while html is not None:
+        html = scroller.scroll()
 
     soup = BeautifulSoup(html, 'html.parser')
-
     comments = UserCommentsScraper.parse_post_comments(html=html, soup=soup)
 
     date = UserCommentsScraper.parse_comment_datetime(html=html, soup=soup)
