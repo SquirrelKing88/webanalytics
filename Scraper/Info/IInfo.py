@@ -3,19 +3,19 @@ class IInfo:
 
     def __init__(self):
         # keys
-        self.__id = None
+        self.__id = None #channel id #entity
         self.__parent_id = None
-        self.__url = None
+        self.__url = None   #channel url
         self.__parent_url = None
 
-        self.__create_datetime = None
-        self.__edit_datetime = None
+        self.__create_datetime = None   #date
+        self.__edit_datetime = None     #edit_date
 
         self.__title = None
         self.__description = None
         self.__tags = set()
         self.__raw_data = None
-        self.__text = None  #retrieve it from Telegram text
+        self.__text = None  #retrieve it from Telegram text #text
 
         # facebook, twitter, instagram, news, telegram
         self.__source_id = None
@@ -40,12 +40,12 @@ class IInfo:
                             #TODO
                           }
 
-        #self.__views = int    count of views
+        #self.__views = int    count of views #views
 
         self.__translation = {
                                 'en': None
                              }
-        self.__media = {
+        self.__media = {    #media
                         'images': set(), # IImage
                         'sounds': set(), #ISound
                         'videos': set(), #IVideo
