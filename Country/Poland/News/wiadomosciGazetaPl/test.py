@@ -1,6 +1,6 @@
-from Country.Poland.News.WiadomosciGazetaPl.NewsScraper import NewsScraper
+from Country.Poland.News.wiadomosciGazetaPl.NewsScraper import NewsScraper
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
-from Scraper.Writters.FileWritter import FileWriter
+from Scraper.Writers.FileWriter import FileWriter
 from Requests.Requester import Requester
 from threading import Thread
 
@@ -11,7 +11,7 @@ translator = GoogleTranslator()
 def getArticle(url, dataset):
     requester = Requester(url=url, retries=5, sleep_time=3)
     response = requester.make_get_request()
-    html = response.data
+    html = response.get_data()
 
     dataset[url]["subtitle"] = (NewsScraper.parse_article_subtitle(html=html))
     dataset[url]["date"] = (NewsScraper.parse_article_datetime(html=html))
@@ -30,7 +30,7 @@ def getNewsDataset(pages):
 
         requester = Requester(url=url, retries=5, sleep_time=3)
         response = requester.make_get_request()
-        html = response.data
+        html = response.get_data()
 
         dataset.update(NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html))
 
