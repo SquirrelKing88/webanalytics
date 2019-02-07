@@ -44,7 +44,7 @@ class NewsScraper(CommonNewsHandler):
             soup = BeautifulSoup(html, 'html.parser')
 
         # TODO scrape year month and day
-        date = datetime(year=year, month=month, day=day)
+        date = datetime(year=year, month=month, day=day, minutes=minutes, hour=hours)
 
         return date
 

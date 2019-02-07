@@ -33,11 +33,15 @@ class FileWriter(CommonWriter):
                 # TODO create class DataRow with methods format_field and get_dictionary
                 #Format datatime
 
-                data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
+                try:
+                    data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
 
-                json.dump(data, file)
+                    json.dump(data, file)
 
-                file.write("\n")
+                    file.write("\n")
+
+                except Exception:
+                    pass
 
             file.flush()
 
