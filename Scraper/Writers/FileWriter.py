@@ -30,12 +30,7 @@ class FileWriter(CommonWriter):
                 # data = self.__scrub(dictionary[url])
                 data = dictionary[url]
 
-                # TODO create class DataRow with methods format_field and get_dictionary
-                #Format datatime
-
-                data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
-
-                json.dump(data, file)
+                json.dump(data, file, indent=4, sort_keys=True, default=str)
 
                 file.write("\n")
 

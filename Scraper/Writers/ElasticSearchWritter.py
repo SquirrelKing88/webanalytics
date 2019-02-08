@@ -110,10 +110,13 @@ class ElasticSearchWriter:
         """
         actions = [
             {
+                "_id": url,
+
                 "_index": self.__index_name,
                 "_type": self.__doc_type,
 
-                "_source": dictionary[url]
+                "_source": dictionary[url],
+                "doc_as_upsert": True
             }
             for url in dictionary
         ]
