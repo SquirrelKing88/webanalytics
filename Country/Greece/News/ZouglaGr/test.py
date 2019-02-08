@@ -4,6 +4,7 @@ from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Requests.Requester import Requester
 from Country.Greece.News.ZouglaGr.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
+from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
 from Scraper.Writers.FileWriter import FileWriter
 
 
@@ -40,4 +41,5 @@ if 'https://www.zougla.gr/politiki/article/' in dataset:
 process_articles_singlethread(source_dataset=dataset.copy(), target_dataset=dataset)
 
 writer = FileWriter("data/news.csv")
-writer.write(dataset)
+FileWriter("data/news.csv").write(dataset)
+ElasticSearchWriter(index_name="test_greece").write(dataset)
