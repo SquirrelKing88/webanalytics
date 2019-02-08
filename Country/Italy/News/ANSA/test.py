@@ -14,7 +14,7 @@ url = "http://www.ansa.it/sito/notizie/topnews/index.shtml"
 # step 1. Read all page with taday's news
 requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
-html = response.data
+html = response.get_data()
 
 # step 2. Create half empty dataset with parsed urls of articles
 dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
@@ -25,7 +25,7 @@ for url in  list(dataset):
     # make new request to upload article data
     requester = Requester(url=url, retries=5)
     response = requester.make_get_request()
-    html = response.data
+    html = response.get_data()
 
     # load html into soup
     soup = BeautifulSoup(html, 'html.parser')
@@ -39,12 +39,14 @@ for url in  list(dataset):
 
     date = datetime(year=2019, month=1, day=23)
 
+    # TODO FIX DATETIME
+    dataset[url]['date']=datetime.now()
 
-    dataset[url]['date']=date
     dataset[url]['subtitle']=subtitle
     dataset[url]['text'] = text
     dataset[url]['html'] = html
 
+    print(url)
 
 
 
