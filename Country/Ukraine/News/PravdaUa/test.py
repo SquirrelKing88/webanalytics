@@ -36,10 +36,11 @@ for url in list(dataset):
     dataset[url]['date'] = NewsScraper.parse_article_datetime(html=html, soup=soup)
     dataset[url]['subtitle'] = NewsScraper.parse_article_subtitle(html=html, soup=soup)
 
-    print( dataset[url])
-    # translation_result = translator.get_translation(dataset[url]["text"])
-    # dataset[url]["translation_en"] = translation_result['translation']
 
+    translation_result = translator.get_translation(dataset[url]["text"])
+    dataset[url]["translation_en"] = translation_result['translation']
+
+    print( dataset[url])
 
 # step 4. Save dataset to folder
 
