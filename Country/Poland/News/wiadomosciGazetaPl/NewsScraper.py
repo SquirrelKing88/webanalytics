@@ -50,9 +50,7 @@ class NewsScraper(CommonNewsHandler):
 
         day,line=line.split(".",1)
         month,line=line.split(".",1)
-        print(line)
         year=line[0:4]
-        print(year)
         line=re.search("\d{2}:\d{2}",line)
         line=line.group(0)
         hour=line[0:1]
