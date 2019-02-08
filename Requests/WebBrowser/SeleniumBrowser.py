@@ -86,3 +86,19 @@ class SeleniumBrowser:
     def get_html(self):
 
         return self.__browser.page_source
+
+
+    def set_element_text(self,element_id,text):
+
+        script="document.getElementById('{0}').value = {1};".format(element_id, text)
+        self.execute_script(script)
+        element = self.__browser.find_element_by_id(element_id)
+        element.click()
+
+
+    def push_element(self, parent_tag, parent_class, element_tag, element_class):
+
+        parent = self.__browser.find_element_by_css_selector('{0}.{1}'.format(parent_tag, parent_class))
+        element = parent.find_element_by_css_selector('{0}.{1}'.format(element_tag, element_class))
+
+        element.click()
