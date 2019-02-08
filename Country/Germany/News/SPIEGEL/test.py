@@ -37,9 +37,8 @@ for url in list(dataset):
     translation_result = translator.get_translation(dataset[url]["text"])
     dataset[url]["translation_en"] = translation_result['translation']
 
-writer = FileWriter("data/news.csv")
-writer.write(dataset) #ERROR: File "C:/Users/Саша/Desktop/PyCh/webanalytics/Country/Germany/News/SPIEGEL/test.py", line 43, in <module>
-                            #writer.write(dataset)
-                            #File "C:\Users\Саша\Desktop\PyCh\webanalytics\Scraper\Writters\FileWritter.py", line 32, in write
-                            #data['date'] = data['date'].strftime("%d/%m/%Y %H:%M:%S")
-                            #AttributeError: 'NoneType' object has no attribute 'strftime'
+es = ElasticSearchWriter(index_name='test_germany')
+writers = [FileWriter("data/news.csv"), es]
+
+for writer in writers:
+    writer.write(dataset)
