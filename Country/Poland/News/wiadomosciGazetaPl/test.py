@@ -1,6 +1,7 @@
 from Country.Poland.News.wiadomosciGazetaPl.NewsScraper import NewsScraper
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.FileWriter import FileWriter
+from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
 from Requests.Requester import Requester
 from threading import Thread
 
@@ -46,8 +47,9 @@ def getNewsDataset(pages):
 
     return dataset
 
-
-writer = FileWriter("data/news.csv")
-writer.write(getNewsDataset(1))
+dataset=getNewsDataset(1)
+writers = [FileWriter("data/news.csv"),ElasticSearchWriter(index_name="test_poland")]
+for writer in writers:
+    writer.write(dataset)
 
 
