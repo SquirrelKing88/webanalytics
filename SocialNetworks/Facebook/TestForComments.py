@@ -37,12 +37,12 @@ for url in list_of_url:
             dataset[url]['author'] = author
             dataset[url]['author_url'] = author_url
             dataset[url]['text'] = text
-
+            print(datetime)
         div_reaction = soup.find_all('span',{'data-testid':"UFI2CommentTopReactions/tooltip"})
         for el in div_reaction:
             reaction = el.a['href']
             reaction = facebook + reaction
-
+            print(reaction)
             dataset[url]['reaction'] = reaction
             #dataset[url]['translation_en'] = translation_en
 print(dataset)
