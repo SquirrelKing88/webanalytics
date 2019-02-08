@@ -47,7 +47,7 @@ def getNewsDataset(pages):
     return dataset
 
 
-writer = FileWriter("data/news.csv")
+writer = FileWriter("news.csv")
 writer.write(getNewsDataset(1))
 
 
