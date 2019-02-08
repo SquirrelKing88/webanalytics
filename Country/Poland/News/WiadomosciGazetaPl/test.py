@@ -1,4 +1,4 @@
-from Country.Poland.News.wiadomosciGazetaPl.NewsScraper import NewsScraper
+from Country.Poland.News.WiadomosciGazetaPl.NewsScraper import NewsScraper
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.FileWriter import FileWriter
 from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
@@ -13,15 +13,17 @@ def getArticle(url, dataset):
     requester = Requester(url=url, retries=5, sleep_time=3)
     response = requester.make_get_request()
     html = response.get_data()
-
-    dataset[url]["subtitle"] = (NewsScraper.parse_article_subtitle(html=html))
-    dataset[url]["date"] = (NewsScraper.parse_article_datetime(html=html))
-    dataset[url]["text"], dataset[url]["html"] = (NewsScraper.parse_article_text(html=html))
     try:
-        translation_result = translator.get_translation(dataset[url]["text"])
-        dataset[url]["translation_en"] = translation_result['translation']
+        dataset[url]["subtitle"] = (NewsScraper.parse_article_subtitle(html=html))
+        dataset[url]["date"] = (NewsScraper.parse_article_datetime(html=html))
+        dataset[url]["text"], dataset[url]["html"] = (NewsScraper.parse_article_text(html=html))
+        try:
+            translation_result = translator.get_translation(dataset[url]["text"])
+            dataset[url]["translation_en"] = translation_result['translation']
+        except Exception:
+            print("Translation error with url {0} and text {1}".format(url, dataset[url]["text"]))
     except Exception:
-        print("Translation error with url {0} and text {1}".format(url, dataset[url]["text"]))
+        print("Something went wrong in "+url)
 
 
 def getNewsDataset(pages):
@@ -49,6 +51,7 @@ def getNewsDataset(pages):
 
 dataset=getNewsDataset(1)
 writers = [FileWriter("data/news.csv"),ElasticSearchWriter(index_name="test_poland")]
+writers[1].delete_index()
 for writer in writers:
     writer.write(dataset)
 
