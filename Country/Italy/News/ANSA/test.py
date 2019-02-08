@@ -4,7 +4,7 @@ from Requests.Requester import Requester
 from Country.Italy.News.ANSA.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 
-from Scraper.Writters.FileWritter import FileWriter
+from Scraper.Writers.FileWriter import FileWriter
 
 
 
