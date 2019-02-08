@@ -22,38 +22,35 @@ dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html
 for url in list(dataset):
 
     print("parse", url)
-    try:
-
-        # make new request to upload article data
-        requester = Requester(url=url, retries=5)
-        response = requester.make_get_request()
-        html = response.get_data()
-
-        # load html into soup
-        soup = BeautifulSoup(html, 'html.parser')
-
-        subtitle = NewsScraper.parse_article_subtitle(html=html, soup=soup)
-
-        date = NewsScraper.parse_article_datetime(html=html, soup=soup, year=2019, month=1, day=22, hours=11, minutes=11)
-
-        dataset[url]["html"], dataset[url]["text"] = NewsScraper.parse_article_text(html=html, soup=soup)
-
-        dataset[url]['date'] = date
-        dataset[url]['subtitle'] = subtitle
 
 
-    except Exception:
-        pass
+    # make new request to upload article data
+    requester = Requester(url=url, retries=5)
+    response = requester.make_get_request()
+    html = response.get_data()
+
+    # load html into soup
+    soup = BeautifulSoup(html, 'html.parser')
+
+    dataset[url]["html"], dataset[url]["text"] = NewsScraper.parse_article_text(html=html, soup=soup)
+    dataset[url]['date'] = NewsScraper.parse_article_datetime(html=html, soup=soup)
+    dataset[url]['subtitle'] = NewsScraper.parse_article_subtitle(html=html, soup=soup)
+
+    print( dataset[url])
     # translation_result = translator.get_translation(dataset[url]["text"])
     # dataset[url]["translation_en"] = translation_result['translation']
 
 
 # step 4. Save dataset to folder
 
-writers = [FileWriter("data/news.csv"), ElasticSearchWriter(index_name='test_ukraine')]
+es = ElasticSearchWriter(index_name='test_ukraine')
+writers = [FileWriter("data/news.csv"), es]
 
 for writer in writers:
     writer.write(dataset)
+
+# clear my ElasticSearch data
+# es.delete_index()
 
 
 
