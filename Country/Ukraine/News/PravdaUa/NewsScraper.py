@@ -89,7 +89,9 @@ class NewsScraper(CommonNewsHandler):
         date_str = soup.find('div', {'class': ['post_news__date', 'post__time']})
 
         if not date_str:
-            date = datetime(year=year, month=month, day=day, hour=hours, minutes=minutes, seconds=seconds)
+            # TODO default value
+            # TODO check error state
+            date = datetime.now()
         else:
             day_month_year, hours_minutes = date_str.text.split(',')[1:3]
             day, month, year = day_month_year.split()
