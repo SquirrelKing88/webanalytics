@@ -1,4 +1,4 @@
-from Country.Poland.News.WiadomosciGazetaPl.NewsScraper import NewsScraper
+from Country.Albania.News.LajmNet.NewsScraper import NewsScraper
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.FileWriter import FileWriter
 from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
@@ -6,7 +6,7 @@ from Requests.Requester import Requester
 from threading import Thread
 
 translator = GoogleTranslator()
-# today news http://wiadomosci.gazeta.pl/wiadomosci/0,114871.html
+# today news http://www.lajm.net/category/lajme/page/1/
 
 
 def getArticle(url, dataset):
@@ -14,7 +14,6 @@ def getArticle(url, dataset):
     response = requester.make_get_request()
     html = response.get_data()
     try:
-        dataset[url]["subtitle"] = (NewsScraper.parse_article_subtitle(html=html))
         dataset[url]["date"] = (NewsScraper.parse_article_datetime(html=html))
         dataset[url]["text"], dataset[url]["html"] = (NewsScraper.parse_article_text(html=html))
         try:
@@ -29,7 +28,7 @@ def getArticle(url, dataset):
 def getNewsDataset(pages):
     dataset = dict()
     for page in range(pages):
-        url = "http://wiadomosci.gazeta.pl/wiadomosci/0,114871.html?str="+str(page+1)
+        url = "http://www.lajm.net/category/lajme/page/"+str(page+1)
 
         requester = Requester(url=url, retries=5, sleep_time=3)
         response = requester.make_get_request()
@@ -50,7 +49,7 @@ def getNewsDataset(pages):
     return dataset
 
 dataset=getNewsDataset(1)
-writers = [FileWriter("data/news.csv"),ElasticSearchWriter(index_name="test_poland")]
+writers = [FileWriter("data/news.csv"),ElasticSearchWriter(index_name="test_albania")]
 writers[1].delete_index()
 for writer in writers:
     writer.write(dataset)
