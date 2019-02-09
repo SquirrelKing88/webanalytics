@@ -3,13 +3,13 @@ from datetime import datetime
 from Requests.Requester import Requester
 from Country.Italy.News.ANSA.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
-
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
 from Scraper.Writers.FileWriter import FileWriter
 
 
 
-
+translator = GoogleTranslator()
 url = "http://www.ansa.it/sito/notizie/topnews/index.shtml"
 
 # step 1. Read all page with today's news
@@ -48,8 +48,11 @@ for url in  list(dataset):
     dataset[url]['subtitle']=subtitle
     dataset[url]['text'] = text
     dataset[url]['html'] = html
-
-    print(url)
+    try:
+        translation_result = translator.get_translation(dataset[url]["text"])
+        dataset[url]["translation_en"] = translation_result['translation']
+    except Exception:
+        print("Translation error with url {0} and text {1}".format(url, dataset[url]["text"]))
 
 
 
