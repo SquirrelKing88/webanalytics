@@ -36,13 +36,15 @@ class NewsScraper(CommonNewsHandler):
         return result
 
     @staticmethod
-    def parse_article_time(html=None, soup=None):
+    def parse_article_datetime(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        time=soup.find_all('div',{'class':['news-date']})
+        datetime=soup.find_all('div',{'class':'news-date'})
 
-        return None, None, None
+        for dates in datetime:
+            datetime =soup.get_text().find('em')
+        return datetime
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):

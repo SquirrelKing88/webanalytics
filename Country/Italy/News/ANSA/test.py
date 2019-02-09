@@ -4,14 +4,15 @@ from Requests.Requester import Requester
 from Country.Italy.News.ANSA.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 
+from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
 from Scraper.Writers.FileWriter import FileWriter
 
 
 
-# today news https://www.pravda.com.ua/news/
+
 url = "http://www.ansa.it/sito/notizie/topnews/index.shtml"
 
-# step 1. Read all page with taday's news
+# step 1. Read all page with today's news
 requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
 html = response.get_data()
@@ -32,15 +33,14 @@ for url in  list(dataset):
 
     subtitle = NewsScraper.parse_article_subtitle(html=html, soup=soup)
 
-    hours, minutes, seconds = NewsScraper.parse_article_time(html=html, soup=soup)
+    #hours, minutes, seconds = NewsScraper.parse_article_datetime(html=html, soup=soup)
 
     html, text = NewsScraper.parse_article_text(html=html, soup=soup)
 
 
-    date = datetime(year=2019, month=1, day=23)
-
+    date = NewsScraper.parse_article_datetime(html=html, soup=soup)
     # TODO FIX DATETIME
-    dataset[url]['date']=datetime.now()
+    dataset[url]['date']=datetime
 
     dataset[url]['subtitle']=subtitle
     dataset[url]['text'] = text
@@ -53,8 +53,10 @@ for url in  list(dataset):
 
 
 # step 4. Save dataset to folder
-writer = FileWriter("data/news.csv")
-writer.write(dataset)
+es = ElasticSearchWriter(index_name='test_italy')
+writers = [FileWriter("data/news.csv"), es]
 
+for writer in writers:
+    writer.write(dataset)
 
 
