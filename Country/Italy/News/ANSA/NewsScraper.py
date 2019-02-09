@@ -1,5 +1,5 @@
 from urllib.parse import urljoin
-
+from datetime import datetime
 from Scraper.CommonNewsHandler import CommonNewsHandler
 from Requests.Requester import Requester
 import re
@@ -9,6 +9,33 @@ class NewsScraper(CommonNewsHandler):
     """
     Inherit CommonNewsHandler for www.ansa.it
     """
+
+    @staticmethod
+    # TODO put this method to Scraper
+    def month_string_to_number(string):
+        month = {
+            'gennaio': 1,
+            'febbraio': 2,
+            'marzo': 3,
+            'aprile': 4,
+            'maggio': 5,
+            'giugno': 6,
+            'luglio': 7,
+            'agosto': 8,
+            'settembre': 9,
+            'ottobre': 10,
+            'novembre': 11,
+            'dicembre': 12,
+
+
+        }
+
+        s = string.strip().lower()
+
+        try:
+            return month[s]
+        except:
+            raise ValueError('Not a month')
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
@@ -35,19 +62,26 @@ class NewsScraper(CommonNewsHandler):
 
         return result
 
+
     @staticmethod
     def parse_article_datetime(html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        datetime=soup.find_all('div',{'class':['news-date']})
+        lines = soup.find_all('div', {'class': ['news-time']})
+        for line in lines:
+            dates = line.find('strong').text.split(' ')
+            month = int(NewsScraper.month_string_to_number(dates[1]))
+            day = int(dates[0])
+            year = int(dates[2])
+            time = line.find('span').text.split(':')
+            hours = int(time[0])
+            minutes = int(time[1])
 
-        for dates in datetime:
-            date =dates.find('em')
-
-
+            date = datetime(year=year, month=month, day=day, hour=hours, minute=minutes)
 
         return date
+
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):

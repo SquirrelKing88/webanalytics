@@ -38,6 +38,9 @@ for url in  list(dataset):
     html, text = NewsScraper.parse_article_text(html=html, soup=soup)
 
 
+    #date=NewsScraper.parse_article_datetime(html=None, soup=None, year=None, month=None, day=None)
+
+
     date = NewsScraper.parse_article_datetime(html=html, soup=soup)
     # TODO FIX DATETIME
     dataset[url]['date']=date
@@ -58,5 +61,7 @@ writers = [FileWriter("data/news.csv"), es]
 
 for writer in writers:
     writer.write(dataset)
+
+
 
 
