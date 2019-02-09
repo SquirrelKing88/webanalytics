@@ -44,7 +44,6 @@ for url in  list(dataset):
     date = NewsScraper.parse_article_datetime(html=html, soup=soup)
     # TODO FIX DATETIME
     dataset[url]['date']=date
-
     dataset[url]['subtitle']=subtitle
     dataset[url]['text'] = text
     dataset[url]['html'] = html
@@ -53,8 +52,7 @@ for url in  list(dataset):
         dataset[url]["translation_en"] = translation_result['translation']
     except Exception:
         print("Translation error with url {0} and text {1}".format(url, dataset[url]["text"]))
-    print(url)
-
+    #print(url)
 
 
 
@@ -64,7 +62,7 @@ es = ElasticSearchWriter(index_name='test_italy')
 writers = [FileWriter("data/news.csv"), es]
 
 for writer in writers:
-    writer.write(dataset)
+   writer.write(dataset)
 
 
 

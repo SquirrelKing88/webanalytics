@@ -86,17 +86,11 @@ class NewsScraper(CommonNewsHandler):
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
 
-        if soup is None:
-            soup = BeautifulSoup(html, 'html.parser')
+        post_links = soup.find_all('h3', {'class': ['news-title']})
+        for posts in post_links:
+            subtitle = posts.text
 
-
-
-        subtitle = soup.find_all('p', {'class': ['news-abs']})
-
-        if subtitle:
-            return subtitle[0].text.strip()
-        else:
-            return None
+        return subtitle
 
     @staticmethod
     def parse_article_text(html=None, soup=None):
