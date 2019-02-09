@@ -62,3 +62,6 @@ writers = [FileWriter("data/news.csv"), es]
 for writer in writers:
     writer.write(dataset)
 
+
+
+
