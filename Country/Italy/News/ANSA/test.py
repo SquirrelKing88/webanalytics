@@ -40,7 +40,7 @@ for url in  list(dataset):
 
     date = NewsScraper.parse_article_datetime(html=html, soup=soup)
     # TODO FIX DATETIME
-    dataset[url]['date']=datetime
+    dataset[url]['date']=date
 
     dataset[url]['subtitle']=subtitle
     dataset[url]['text'] = text

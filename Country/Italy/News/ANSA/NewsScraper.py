@@ -15,7 +15,7 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        div_news = soup.find_all('div', {'class': ['span6 pp-column pull-right']})
+        div_news = soup.find_all('div', {'class': ['span6', 'pp-column', 'pull-right']})
 
         if not div_news:
             return None
@@ -40,11 +40,14 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        datetime=soup.find_all('div',{'class':'news-date'})
+        datetime=soup.find_all('div',{'class':['news-date']})
 
         for dates in datetime:
-            datetime =soup.get_text().find('em')
-        return datetime
+            date =dates.find('em')
+
+
+
+        return date
 
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
@@ -52,7 +55,9 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        subtitle = soup.find_all('div', {'class': ['news_abs']})
+
+
+        subtitle = soup.find_all('p', {'class': ['news-abs']})
 
         if subtitle:
             return subtitle[0].text.strip()
