@@ -18,9 +18,8 @@ class CommonNewsHandler:
                     "date": date,
                     "title": title,
                     "subtitle": subtitle,
-                    "html": html,
                     "text": text,
-                    "translation_en": translation
+                    "translation_en": translation,
                 }
 
     @staticmethod

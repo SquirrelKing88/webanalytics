@@ -12,7 +12,7 @@ class NewsScraper(CommonNewsHandler):
     def parse_articles_list(url_root=None, html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
-        div_news = soup.find_all('h2', {'class': ['article-title']})
+        div_news = soup.find_all('h2', {'class': ['fig-profile__headline']})
         if not div_news:
             return None
 
@@ -24,25 +24,8 @@ class NewsScraper(CommonNewsHandler):
                 title = article.a['title']
             except TypeError:
                 continue
-            if not 'http' in url:
-                url = urljoin(url_root, url)
-                result[url] = CommonNewsHandler.get_article_row(url=url, title=title)
-            else:
-                continue
+            result[url] = CommonNewsHandler.get_article_row(url=url, title=title)
         return result
-
-    @staticmethod
-    def parse_article_subtitle(html=None, soup=None):
-
-        if soup is None:
-            soup = BeautifulSoup(html, 'html.parser')
-
-        subtitle = soup.find_all('p')
-
-        if subtitle:
-            return subtitle[0].text.strip()
-        else:
-            return None
 
     @staticmethod
     def parse_article_text(html=None, soup=None):
