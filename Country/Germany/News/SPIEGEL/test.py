@@ -11,7 +11,7 @@ url = "http://www.spiegel.de/"
 
 requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
-html = response.data
+html = response.get_data()
 
 
 dataset = NewsScraper.parse_articles_list(url_root=url,html=html)
@@ -20,7 +20,7 @@ for url in list(dataset):
 
     requester = Requester(url=url, retries=5)
     response = requester.make_get_request()
-    html = response.data
+    html = response.get_data()
 
     soup = BeautifulSoup(html, 'html.parser')
 
