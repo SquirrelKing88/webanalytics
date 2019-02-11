@@ -13,11 +13,10 @@ requester = Requester(url=url, retries=5, sleep_time=3)
 response = requester.make_get_request()
 html = response.get_data()
 
-
 dataset = NewsScraper.parse_articles_list(url_root=url,html=html)
 
 for url in list(dataset):
-
+    print('parsing', url)
     requester = Requester(url=url, retries=5)
     response = requester.make_get_request()
     html = response.get_data()
@@ -37,6 +36,7 @@ for url in list(dataset):
 
     translation_result = translator.get_translation(dataset[url]["text"])
     dataset[url]["translation_en"] = translation_result['translation']
+    print(dataset[url])
 
 es = ElasticSearchWriter(index_name='test_germany')
 writers = [FileWriter("data/news.csv"), es]
