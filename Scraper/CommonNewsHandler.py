@@ -14,14 +14,14 @@ class CommonNewsHandler:
         :return: dictionary
         """
         return {
-            "url": url,
-            "date": date,
-            "title": title,
-            "subtitle": subtitle,
-            "html": html,
-            "text": text,
-            "translation_en": translation
-        }
+                    "url": url,
+                    "date": date,
+                    "title": title,
+                    "subtitle": subtitle,
+                    "html": html,
+                    "text": text,
+                    "translation_en": translation
+                }
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
@@ -88,3 +88,6 @@ class CommonNewsHandler:
         """
 
         return None, None
+
+
+
