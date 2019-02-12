@@ -3,14 +3,28 @@ import plotly.graph_objs as go
 import numpy as np
 import json
 
-from flask import Flask, render_template
-
-
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 app.secret_key = 'development key'
 
 
+world={
+            'Ukraine': 10,
+            'Poland': 12
+        }
+
+# http://127.0.0.1:5000/world?country=Ukraine&value=126
+
+@app.route('/world', methods=['GET'])
+def update_world():
+   country = request.args.get('country')
+   value = request.args.get('value')
+
+   if country in world:
+       world[country] = value
+
+   return json.dumps(world)
 
 
 
