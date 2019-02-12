@@ -4,7 +4,7 @@ import polyglot
 from polyglot.text import Text
 from polyglot.downloader import downloader
 from polyglot.detect import Detector
-from LanguageProcessing.LanguageHandler import LanguageHandler
+
 
 
 
@@ -26,9 +26,9 @@ class PolyglotAnalysis:
     if not os.path.isdir(model_path):
 
       # upload model
-      for value in LanguageHandler.languages.values():
-        downloader.download("ner2.{0}".format(value))
-        downloader.download("embeddings2.{0}".format(value))
+      # TODO other models
+      downloader.download("ner2.{0}".format(self.__language_abbreviation))
+      downloader.download("embeddings2.{0}".format(self.__language_abbreviation))
 
 
     #Entity Location Persons
@@ -42,6 +42,73 @@ class PolyglotAnalysis:
 
 
 
+  def get_persons(self):
+    """
 
+    Get all person mentioned in text
+    For name translation user transliteration but not translation
+    https://polyglot.readthedocs.io/en/latest/Transliteration.html
+
+
+    NO DUBLICATES
+
+    :return: dictionary{
+                        person: ['Ігор Терещенко',...],
+                        person_en:['Igor Tereshchenko',...]
+                        }
+
+    """
+    return None
+
+
+
+  def get_locations(self):
+    """
+
+    Get all location mentioned in text
+
+    For name translation GoogleTranslator
+
+
+    NO DUBLICATES
+
+
+    :return: dictionary{
+                          location: ['Україна','Польша',...],
+                          location_en:['Ukraine','Poland',...],
+                          coordinates: [
+                                          {
+                                            latitude: ...,
+                                            longitude: ...
+                                          },
+                                          {
+                                            latitude: ...,
+                                            longitude: ...
+                                          },
+                                          ...
+                                        ]
+
+                        }
+
+    """
+    return None
+
+
+  def get_organizations(self):
+
+    """
+
+    Get all organization mentioned in text
+
+    NO DUBLICATES
+
+    :return: dictionary{
+                          organizations: ['КПІ','Samsung',...],
+                          organizations_en:['KPI','Samsung',...],
+
+                        }
+    """
+
+    return None
 
 
