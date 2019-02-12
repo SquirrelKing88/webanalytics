@@ -70,18 +70,6 @@ class NewsScraper(CommonNewsHandler):
             seconds = int(time[2])
             date = datetime(year, month, day, hours, minutes, seconds)
 
-        elif re.findall('\d\d.\d\d.\d\d\d\d', str(soup.p)) and re.findall('\d\d:\d\d', str(soup.p)):
-            datetime_line = soup.p
-
-            date_line = re.findall('\d\d.\d\d.\d\d\d\d', str(datetime_line))
-            date_li = re.split('\.', date_line[0])
-            day, month, year = int(date_li[0]), int(date_li[1]), int(date_li[2])
-
-            time_line = re.findall('\d\d:\d\d', str(datetime_line))
-            time_li = re.split(':', time_line[0])
-            hours, minutes, seconds = int(time_li[0]), int(time_li[1]), 00
-            date = datetime(year, month, day, hours, minutes, seconds)
-
         else:
             year = 1111
             month = 1

@@ -1,5 +1,5 @@
 from Requests.Requester import Requester
-from Country.France.News.LeMonde.NewsScraper import NewsScraper
+from Country.France.News.LeFigaro.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
