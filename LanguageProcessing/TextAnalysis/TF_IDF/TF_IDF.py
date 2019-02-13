@@ -32,8 +32,10 @@ class TF_IDF:
 
 
 
-    def get_tf_idf(self):
+    def get_tf_idf(self, max_count):
         """
+
+        Return max_count of words with tf_idf characteristics order by tf_idf
 
         :return: dictionary{
                             'word':{
@@ -44,4 +46,5 @@ class TF_IDF:
                 }
         """
 
+        # TODO use max_count
         return self.__tf_idf_result
