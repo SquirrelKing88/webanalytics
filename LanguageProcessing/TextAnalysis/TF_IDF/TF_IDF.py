@@ -11,15 +11,9 @@ class TF_IDF:
         :param articles: list of text documents
         """
 
-
         self.__articles = articles
         vectorizer = TfidfVectorizer()
-
-        # tokenize and build vocab
         vectorizer.fit(articles)
-
-        print(vectorizer.vocabulary_)
-        print(vectorizer.idf_)
 
         translator = GoogleTranslator()
 
