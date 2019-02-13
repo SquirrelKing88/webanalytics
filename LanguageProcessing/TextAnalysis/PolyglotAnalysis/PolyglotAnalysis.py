@@ -4,6 +4,7 @@ import polyglot
 from polyglot.text import Text
 from polyglot.downloader import downloader
 from polyglot.detect import Detector
+from polyglot.transliteration import Transliterator
 
 
 
@@ -37,8 +38,8 @@ class PolyglotAnalysis:
 
 
     for sentence in text.sentences:
-      for entity in sentence.entities:
-        print(entity.tag, entity)
+     for entity in sentence.entities:
+       print(entity.tag, entity)
 
 
 
@@ -58,7 +59,23 @@ class PolyglotAnalysis:
                         }
 
     """
-    return None
+    text = Text(self.__text)
+
+
+    result=set()
+    for sentence in text.sentences:
+      for entity in sentence.entities:
+        if entity.tag=='I-PER':
+
+          line=''
+          try:
+            for el in entity:
+              line+=(Text(el).transliterate('en'))[0]+' '
+            result.add(line[0:-1])
+          except:
+            pass
+
+    return result
 
 
 
