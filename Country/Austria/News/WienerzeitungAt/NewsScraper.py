@@ -16,15 +16,15 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        news = soup.findAll('div', {'class': 'blog_articles'})
+        news = soup.findAll('div', {'class': 'em_cnt_aufmacher_container'})
 
         result = dict()
 
         for article in news:
-            link = article.find('h1').find('a')
+            link = article.find('h2').find('a')
             url = link['href']
             title = link.text
-            subtitle = article.find('div', {'class': 'col-xs-8'}).text
+            subtitle = article.find('p', {'class': 'em_text'}).text
 
             if 'http' not in url:
                 url = urljoin(url_root, url)
@@ -42,9 +42,9 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        date = soup.find('span', {'itemprop': 'datePublished'})['content']
+        date = soup.find('span', {'style': 'color: #999;'}).text
 
-        result = datetime.strptime(date[:-1:], "%Y-%m-%dT%H:%M:%S")
+        result = datetime.strptime(date[5:-4:], "%d.%m.%Y, %H:%M")
 
         if year:
             date.replace(year=year)
@@ -72,7 +72,7 @@ class NewsScraper(CommonNewsHandler):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
-        text = soup.find('div', {'class': 'description'})
+        text = soup.find('div', {'id': 'em_artikelansicht_artikel'})
 
         if text:
             html_text = text.prettify()
