@@ -4,6 +4,8 @@
 <head>
 
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
     <script type="text/javascript">
       google.charts.load('current', {
         'packages':['geochart'],
@@ -20,6 +22,18 @@
 
         chart.draw(data, options);
       }
+
+      $(document).ready(function() {
+  setInterval(function() {
+    cache_clear()
+  }, 3000);
+});
+
+function cache_clear() {
+  <!--window.location.reload(true);-->
+  drawRegionsMap()
+  // window.location.reload(); use this if you do not remove cache
+}
     </script>
 </head>
 
