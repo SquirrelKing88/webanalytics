@@ -66,10 +66,8 @@ def index():
 
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-    plotly.offline.plot(fig, validate=False, filename='d3-world-map.html')
+
     return render_template('graphs.html', graphJSON=graphJSON)
-
-
 
 
 
