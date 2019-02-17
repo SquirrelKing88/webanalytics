@@ -2,7 +2,7 @@ import plotly
 import plotly.graph_objs as go
 import numpy as np
 import json
-import pandas as pd
+
 from flask import Flask, render_template, request
 
 app = Flask(__name__)
@@ -63,15 +63,18 @@ def index():
             "pieData": [
                             {
                                 "category": "bob",
-                                "value": 10
+                                "value": 10,
+                                "color": '#e4'
                             },
                             {
                                 "category": "boba",
-                                "value": 30
+                                "value": 30,
+                                "color": '#e4'
                             },
                             {
                                 "category": "boban",
-                                "value": 100
+                                "value": 100,
+                                "color": '#e4'
                             }
                         ]
         },
@@ -85,11 +88,13 @@ def index():
             "pieData": [
                 {
                     "category": "Category #1",
-                    "value": 200
+                    "value": 200,
+                    "color": '#e4'
                 },
                 {
                     "category": "Category #2",
-                    "value": 300
+                    "value": 300,
+                    "color": '#e4'
                 }
             ]
         },
