@@ -21,8 +21,8 @@ def flags(frequencies=None,image=None,texts=None):
     stopwords = set(STOPWORDS)
     stopwords.add("said")
     #TODO cahnge wordclouds parameter values
-    wordcloud = WordCloud(background_color="white", mask=flag,
-                          stopwords=stopwords, max_font_size=40)
+    wordcloud = WordCloud(background_color="white", max_words=1000, mask=flag,
+               stopwords=stopwords, max_font_size=50, random_state=42)
 
     wordcloud.generate_from_frequencies(frequencies=frequencies)
 
