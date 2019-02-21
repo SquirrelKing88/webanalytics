@@ -7,13 +7,17 @@ from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 scrapper=Scraper()
 translator=GoogleTranslator()
 
+
 def getPost(post, dataset):
+    if post.action != None:
+        return
     text=scrapper.getPostMessage(post)
     try:
+        print("Translating "+text[0:30]+'...')
         translation_result = translator.get_translation(text)
-        print(translation_result["translation"])
+        #print(translation_result["translation"])
     except:
-        #print("Translation error in "+text)
+        print("Translation error in "+text[0:30]+'...')
         translation_result={'translation':None}
     dataset[scrapper.getPostId(post)] = {'id': scrapper.getPostId(post),
                                          'date': scrapper.getPostDate(post),
@@ -67,10 +71,10 @@ def insights(dataset):
         iam_apikey='3SxyLvrknAbDrpuUwKZAhkyx6Y8pfYbSRUBrpM1x5yCW',
         url='https://gateway-lon.watsonplatform.net/personality-insights/api'
     )
-
     data={'contentItems':[]}
     for id in dataset:
-        data['contentItems'].append({'content':dataset[id]['translation_en']})
+        if dataset[id]['translation_en']:
+            data['contentItems'].append({'content':dataset[id]['translation_en']})
     print(data)
     profile = personality_insights.profile(
         data,
@@ -85,7 +89,7 @@ telegram = TelegramHandler()
 
 client = telegram.get_client()
 
-telegram_channel="dekanat_fpm"
+telegram_channel="ktfugu_life"
 
 writer = FileWriter(("data/{}.csv").format(telegram_channel))
 insights(getPostsDataset(channel_name=telegram_channel))
