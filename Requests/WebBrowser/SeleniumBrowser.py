@@ -1,6 +1,6 @@
-import os
 from selenium import webdriver
-
+import os
+import signal
 from Requests.Response import Response
 
 
@@ -37,8 +37,8 @@ class SeleniumBrowser:
 
     def __del__(self):
         self.__browser.delete_all_cookies()
-
         self.__browser.close()
+        os.kill(self.__browser.service.process.pid, signal.SIGTERM)
 
 
     def execute_script(self, script):
@@ -92,13 +92,14 @@ class SeleniumBrowser:
 
         script="document.getElementById('{0}').value = {1};".format(element_id, text)
         self.execute_script(script)
-        element = self.__browser.find_element_by_id(element_id)
-        element.click()
+        # element = self.__browser.find_element_by_id(element_id)
+        # element.click()
 
 
     def push_element(self, parent_tag, parent_class, element_tag, element_class):
 
         parent = self.__browser.find_element_by_css_selector('{0}.{1}'.format(parent_tag, parent_class))
-        element = parent.find_element_by_css_selector('{0}.{1}'.format(element_tag, element_class))
-
-        element.click()
+        if parent:
+            element = parent.find_element_by_css_selector('{0}.{1}'.format(element_tag, element_class))
+            if element:
+                element.click()
