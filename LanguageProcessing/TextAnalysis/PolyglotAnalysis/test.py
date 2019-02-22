@@ -23,4 +23,12 @@ blob = u"""
 обмін науково-педагогічними працівниками, обмін студентами, стажування, організацію спільних семінарів, конференцій, спільні наукові публікації та інше.
 """
 
+
+
 pa = PolyglotAnalysis(blob)
+
+print(pa.get_persons())
+print(pa.get_locations())
+print(pa.get_organizations())
+
+

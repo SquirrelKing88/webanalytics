@@ -1,114 +1,184 @@
-import os
-
-import polyglot
+import json
 from polyglot.text import Text
-from polyglot.downloader import downloader
 from polyglot.detect import Detector
-
-
-
-
-
+from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
+from Requests.Requester import Requester
 
 
 class PolyglotAnalysis:
 
-  def __init__(self, text):
+    def __init__(self, text):
 
-    self.__text = text
+        self.__text = text
 
-    detector = Detector(text)
-    self.__language_abbreviation = detector.language.code
+        detector = Detector(text)
+        self.__language_abbreviation = detector.language.code
 
-
-    model_path = os.path.join(polyglot.polyglot_path, 'ner2', self.__language_abbreviation)
-
-    if not os.path.isdir(model_path):
-
-      # upload model
-      # TODO other models
-      downloader.download("ner2.{0}".format(self.__language_abbreviation))
-      downloader.download("embeddings2.{0}".format(self.__language_abbreviation))
-
-
-    #Entity Location Persons
-
-    text = Text(text)
-
-
-    for sentence in text.sentences:
-      for entity in sentence.entities:
-        print(entity.tag, entity)
+        self.__polyglot_text = Text(text, hint_language_code=self.__language_abbreviation)
 
 
 
-  def get_persons(self):
-    """
+        self.__persons = dict()
+        self.__locations = dict()
+        self.__organizations = dict()
 
-    Get all person mentioned in text
+
+        for sentence in self.__polyglot_text.sentences:
+            for entity in sentence.entities:
+                if entity.tag == 'I-PER':
+                  self.__persons.update(self.__get_person(entity))
+
+                elif entity.tag == 'I-LOC':
+                  self.__locations.update(self.__get_location(entity))
+
+                elif entity.tag == 'I-ORG':
+                  self.__organizations.update(self.__get_organization(entity))
+
+                print(entity.tag, entity)
+
+
+    # ============================================================================
+
+    def __get_person_id(self, person):
+        # TODO get person id by person data
+        return repr(person)
+
+    def __get_person(self, entity):
+        """
+
+    Get person mentioned in text
     For name translation user transliteration but not translation
     https://polyglot.readthedocs.io/en/latest/Transliteration.html
 
-
-    NO DUBLICATES
-
     :return: dictionary{
-                        person: ['Ігор Терещенко',...],
-                        person_en:['Igor Tereshchenko',...]
+                        # found in database or generated a new one
+                        person_id:{
+                                    # set of words
+                                    person: {'Ігор', 'Терещенко'}
+                                    person_en: {'Igor', 'Tereshchenko'}
+                                  }
                         }
 
     """
-    return None
 
+        person = set()
+        person_en = set()
 
+        for el in entity:
+            person.add(el.lower())
+            person_en.add(Text(el, hint_language_code=self.__language_abbreviation).transliterate('en')[0])
 
-  def get_locations(self):
-    """
+        person_id = self.__get_person_id(person)
 
-    Get all location mentioned in text
+        return {person_id:
+            {
+                'person': person,
+                'person_en': person_en
+            }
+        }
 
-    For name translation GoogleTranslator
+    # ============================================================================
 
+    def __get_location_id(self, location):
+      # TODO get location id from DB
+      return repr(location)
 
-    NO DUBLICATES
+    def __get_location(self, entity):
+        """
 
+    Get location mentioned in text
 
-    :return: dictionary{
-                          location: ['Україна','Польша',...],
-                          location_en:['Ukraine','Poland',...],
-                          coordinates: [
-                                          {
-                                            latitude: ...,
-                                            longitude: ...
-                                          },
-                                          {
-                                            latitude: ...,
-                                            longitude: ...
-                                          },
-                                          ...
-                                        ]
-
+    :return: dictionary = {
+                        # found in database or generated a new one
+                        location_id:
+                                      {
+                                        location: {'Україна'}
+                                        location_en:{'Ukraine'}
+                                        coordinates:  {
+                                                          latitude: ...,
+                                                          longitude: ...
+                                                        }
+                                      }
                         }
 
     """
-    return None
+
+        location = set()
+        location_en = set()
+
+        for el in entity:
+          location.add(el.lower())
+
+          # TODO transliterate VS Translation
+          location_en.add(Text(el, hint_language_code=self.__language_abbreviation).transliterate('en')[0])
+
+        location_name = ' '.join(entity)
+
+        requester = Requester(url='https://nominatim.openstreetmap.org/search')
+
+        # TODO location_name which language better
+        response = requester.make_get_request(parameters={'q': location_name, 'format': 'json', 'limit': 1}).get_data()
+        response = response.decode('utf-8')
+        response = json.loads(response)[0]
+
+        location_id = self.__get_location_id(location)
+        return {
+                location_id: {
+                                'location': location,
+                                'location_en': location_en,
+                                'coordinates': {
+                                                'latitude': response['lat'],
+                                                'longitude': response['lon']
+                                               }
+                              }
+              }
 
 
-  def get_organizations(self):
+    # ============================================================================
 
-    """
 
-    Get all organization mentioned in text
+    def __get_organization_id(self,organization):
+      # TODO get location id from DB
+      return repr(organization)
 
-    NO DUBLICATES
+    def __get_organization(self, entity):
+      """
 
-    :return: dictionary{
-                          organizations: ['КПІ','Samsung',...],
-                          organizations_en:['KPI','Samsung',...],
+    Get organization mentioned in text
 
+    :return: dictionary = {
+                        # found in database or generated a new one
+                        organization_id:
+                                      {
+                                        organization: {'КПІ'}
+                                        organization_en:{'KPI'}
+                                      }
                         }
+
     """
 
-    return None
+      organization = set()
+      organization_en = set()
 
+      for el in entity:
+        organization.add(el.lower())
 
+        # TODO transliterate VS Translation
+        organization_en.add(Text(el, hint_language_code=self.__language_abbreviation).transliterate('en')[0])
+
+        organization_id = self.__get_organization_id(organization)
+      return {
+                organization_id: {
+                                    'organization': organization,
+                                    'organization_en': organization_en
+                                  }
+              }
+
+    def get_persons(self):
+        return self.__persons
+
+    def get_organizations(self):
+        return self.__organizations
+
+    def get_locations(self):
+        return self.__locations
