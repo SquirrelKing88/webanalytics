@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+
+    <link href={{ url_for('static', filename='css/bootstrap.min.css') }} rel="stylesheet" id="bootstrap-css">
+    <script src={{ url_for('static', filename='js/jquery-3.3.1.min.js') }}></script>
+
+    <script src={{ url_for('static', filename='js/bootstrap.min.js') }}></script>
+
+
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css" media="screen">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+    <link href={{ url_for('static', filename='css/cloud.css') }} rel="stylesheet" id="bootstrap-css">
+
+    <script src={{ url_for('static', filename='js/cloud.js') }}></script>
+
+
+</head>
+<body>
+
+
+
+    <!-- Page Content -->
+   <div class="container page-top">
+
+
+
+        <div class="row">
+
+            {%for country in dataset%}
+
+                <div class="col-lg-3 col-md-4 col-xs-6 thumb">
+                    {{country}}
+
+                    <a href="{{ url_for('static', filename='images/clouds/'+dataset[country]['image']) }}?auto=compress&cs=tinysrgb&h=650&w=940" class="fancybox" rel="ligthbox">
+                        <img  src={{ url_for('static', filename='images/clouds/'+dataset[country]['image']) }} class="zoom img-fluid "  alt="">
+
+                    </a>
+                </div>
+
+            {%endfor%}
+
+
+
+
+
+
+
+
+       </div>
+
+
+
+
+    </div>
+</body>
+</html>
