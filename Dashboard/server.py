@@ -1,21 +1,17 @@
-import plotly
-import plotly.graph_objs as go
-import numpy as np
+
 import json
 from os import listdir
 from os.path import isfile, join
-from flask import Flask, render_template, request
-import os
+
 import os
 import random
-from os import path
+
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
-from os import path
+
 from PIL import Image
 import numpy as np
-import matplotlib.pyplot as plt
-from io import BytesIO
-from flask import Flask, render_template, send_file
+
+from flask import Flask, render_template
 
 
 
@@ -122,8 +118,8 @@ def index():
 
 
 
-
-def create_clouds():
+@app.route('/update_clouds', methods=['GET'])
+def update_clouds():
     frequencies = {
         "Ukraine": 2000,
         "Poland": 1000,
@@ -161,12 +157,11 @@ def create_clouds():
         wordcloud.to_file(os.path.join(path_save,file))
         print('Done for ',file)
 
+    return 'Done'
+
+
 @app.route('/clouds', methods=['GET'])
 def clouds():
-
-    # never call here to long to wait
-    # create service for this
-    # create_clouds()
 
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
