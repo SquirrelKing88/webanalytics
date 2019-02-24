@@ -148,7 +148,7 @@ def update_clouds():
 
         # TODO change wordclouds parameter values
         wordcloud = WordCloud(background_color="white", max_words=1000, mask=flag,
-                              stopwords=stopwords, max_font_size=50, random_state=42)
+                              stopwords=stopwords, max_font_size=45, random_state=42)
 
         wordcloud.generate_from_frequencies(frequencies=frequencies)
         image_colors = ImageColorGenerator(flag)
