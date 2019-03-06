@@ -57,7 +57,7 @@ class GoogleTranslator:
             while len(block) < max_symbols_count and sentences:
                 block += sentences.pop(0)+' '
 
-            block_translation = self.__get_translation(block,result['original_language'])
+            block_translation = self.__get_translation(block, result['original_language'])
 
             result['translation'] += block_translation['translation']
 
