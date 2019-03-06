@@ -24,3 +24,9 @@ blob = u"""
 """
 
 pa = PolyglotAnalysis(blob)
+
+print(pa.get_persons())
+print(pa.get_locations())
+print(pa.get_organizations())
+
+

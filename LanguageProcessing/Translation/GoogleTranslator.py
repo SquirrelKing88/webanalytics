@@ -17,7 +17,7 @@ class GoogleTranslator:
         self.__browser.make_get_request('https://translate.google.com.ua/?tl={0}'.format(destination_language))
 
 
-    def get_translation(self, original_text, max_symbols_count=2500):
+    def get_translation(self, original_text, max_symbols_count=2500, original_language=None):
         """
         :param original_text: text to translate
         :param destination_language: language abbreviation
@@ -34,21 +34,28 @@ class GoogleTranslator:
         if not original_text:
             return result
 
-        detector = Detector(original_text[:100])
-        result['original_language'] = detector.language.code
+        # Language detection
+        if not original_language:
+            detector = Detector(original_text[:100])
+            result['original_language'] = detector.language.code
+        else:
+            result['original_language'] = original_language
 
+
+        # Input data prepare
         if len(original_text) > max_symbols_count:
             tokenizer = LanguageHandler.get_tokenizer(result['original_language'])
             sentences = tokenizer.tokenize(original_text.strip())
         else:
             sentences = [original_text]
 
-        sentences.reverse()
         result['translation'] = ''
         while sentences:
             block = ''
+
+            # TODO speed up by deleting pop
             while len(block) < max_symbols_count and sentences:
-                block += sentences.pop()+' '
+                block += sentences.pop(0)+' '
 
             block_translation = self.__get_translation(block,result['original_language'])
 
@@ -81,7 +88,9 @@ class GoogleTranslator:
 
             if not translation_html:
                 break
-
+            # type space to show delete button
+            self.__browser.set_element_text('source', json.dumps(' '))
+            # click on delete button
             self.__browser.push_element(parent_tag='div', parent_class='clear-wrap', element_tag='div', element_class='jfk-button-img')
 
         translation = ''
