@@ -34,7 +34,7 @@ for url in list(dataset):
 
     dataset[url]["html"], dataset[url]["text"] = NewsScraper.parse_article_text(html=html, soup=soup)
     dataset[url]['date'] = NewsScraper.parse_article_datetime(html=html, soup=soup)
-    dataset[url]['subtitle'] = NewsScraper.parse_article_subtitle(html=html, soup=soup)
+
 
 
     translation_result = translator.get_translation(dataset[url]["text"])
@@ -44,8 +44,8 @@ for url in list(dataset):
 
 # step 4. Save dataset to folder
 
-es = ElasticSearchWriter(index_name='test_ukraine')
-writers = [FileWriter("data/news.csv"), es]
+# es = ElasticSearchWriter(index_name='test_ukraine')
+writers = [FileWriter("data/news.csv")]
 
 for writer in writers:
     writer.write(dataset)

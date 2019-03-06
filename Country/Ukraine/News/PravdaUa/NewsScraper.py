@@ -72,8 +72,9 @@ class NewsScraper(CommonNewsHandler):
             if 'http' not in url:
                 url = urljoin(url_root, url)
 
-            # save url and article title
-            result[url] = CommonNewsHandler.get_article_row(url=url, title=link.text)
+            # save url and article title and subtitle
+            subtitle = NewsScraper.parse_article_subtitle(soup=article)
+            result[url] = CommonNewsHandler.get_article_row(url=url, title=link.text, subtitle=subtitle)
 
         return result
 
