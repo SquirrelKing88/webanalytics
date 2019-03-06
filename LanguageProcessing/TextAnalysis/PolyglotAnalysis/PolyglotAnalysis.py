@@ -34,7 +34,7 @@ class PolyglotAnalysis:
                 elif entity.tag == 'I-ORG':
                   self.__organizations.update(self.__get_organization(entity))
 
-                # print(entity.tag, entity)
+                print(entity.tag, entity)
 
 
     # ============================================================================
