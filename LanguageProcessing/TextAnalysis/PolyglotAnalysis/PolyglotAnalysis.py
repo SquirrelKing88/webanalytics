@@ -7,34 +7,34 @@ from Requests.Requester import Requester
 
 class PolyglotAnalysis:
 
-  def __init__(self, text):
+    def __init__(self, text):
 
-    self.__text = text
+        self.__text = text
 
-    detector = Detector(text)
-    self.__language_abbreviation = detector.language.code
+        detector = Detector(text)
+        self.__language_abbreviation = detector.language.code
 
-    self.__polyglot_text = Text(text, hint_language_code=self.__language_abbreviation)
-
-
-
-    self.__persons = dict()
-    self.__locations = dict()
-    self.__organizations = dict()
+        self.__polyglot_text = Text(text, hint_language_code=self.__language_abbreviation)
 
 
-    for sentence in self.__polyglot_text.sentences:
-      for entity in sentence.entities:
-              if entity.tag == 'I-PER':
-                self.__persons.update(self.__get_person(entity))
 
-              elif entity.tag == 'I-LOC':
-                self.__locations.update(self.__get_location(entity))
+        self.__persons = dict()
+        self.__locations = dict()
+        self.__organizations = dict()
 
-              elif entity.tag == 'I-ORG':
-                self.__organizations.update(self.__get_organization(entity))
 
-              # print(entity.tag, entity)
+        for sentence in self.__polyglot_text.sentences:
+            for entity in sentence.entities:
+                if entity.tag == 'I-PER':
+                  self.__persons.update(self.__get_person(entity))
+
+                elif entity.tag == 'I-LOC':
+                  self.__locations.update(self.__get_location(entity))
+
+                elif entity.tag == 'I-ORG':
+                  self.__organizations.update(self.__get_organization(entity))
+
+                print(entity.tag, entity)
 
 
     # ============================================================================
@@ -44,7 +44,7 @@ class PolyglotAnalysis:
         return repr(person)
 
     def __get_person(self, entity):
-      """
+        """
 
     Get person mentioned in text
     For name translation user transliteration but not translation
@@ -61,21 +61,21 @@ class PolyglotAnalysis:
 
     """
 
-      person = set()
-      person_en = set()
+        person = set()
+        person_en = set()
 
-      for el in entity:
-          person.add(el.lower())
-          person_en.add(Text(el, hint_language_code=self.__language_abbreviation).transliterate('en')[0])
+        for el in entity:
+            person.add(el.lower())
+            person_en.add(Text(el, hint_language_code=self.__language_abbreviation).transliterate('en')[0])
 
-      person_id = self.__get_person_id(person)
+        person_id = self.__get_person_id(person)
 
-      return {person_id:
-          {
-              'person': person,
-              'person_en': person_en
-          }
-      }
+        return {person_id:
+            {
+                'person': person,
+                'person_en': person_en
+            }
+        }
 
     # ============================================================================
 
@@ -91,12 +91,12 @@ class PolyglotAnalysis:
     :return: dictionary = {
                         # found in database or generated a new one
                         location_id:
-                                          {
+                                      {
                                         location: {'Україна'}
                                         location_en:{'Ukraine'}
                                         coordinates:  {
-                                            latitude: ...,
-                                            longitude: ...
+                                                          latitude: ...,
+                                                          longitude: ...
                                                         }
                                       }
                         }
@@ -174,11 +174,11 @@ class PolyglotAnalysis:
                                   }
               }
 
-  def get_persons(self):
-      return self.__persons
+    def get_persons(self):
+        return self.__persons
 
-  def get_organizations(self):
+    def get_organizations(self):
         return self.__organizations
 
-  def get_locations(self):
-      return self.__locations
+    def get_locations(self):
+        return self.__locations
