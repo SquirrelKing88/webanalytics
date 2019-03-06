@@ -5,7 +5,7 @@ text = ["The quick brown fox jumped over the lazy dog.",
 		"The fox"]
 
 
-tf_idf = TF_IDF(text)
+tf_idf = TF_IDF(text, 'en')
 
 
 print(tf_idf.get_tf_idf())
