@@ -13,7 +13,7 @@ class NewsScraper(CommonNewsHandler):
     """
 
     @staticmethod
-    # TODO put this method to Scraper
+    # TODO put this method to LanguageProcessing
     def month_string_to_number(string):
         month = {
             'січень': 1,
@@ -50,9 +50,35 @@ class NewsScraper(CommonNewsHandler):
         except:
             raise ValueError('Not a month')
 
+    @staticmethod
+    def get_root_url():
+        """
+
+        :return: url for news page
+        """
+        return "https://www.pravda.com.ua/news/"
+
+    @staticmethod
+    def get_country_code():
+        """
+
+        :return: country code
+        """
+        return 'uk'
 
     @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
+
+        """
+
+        :param url_root:
+        :param html:
+        :param soup:
+        :return: dataset filled
+                            url
+                            title
+                            subtitle
+        """
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
 
@@ -72,8 +98,11 @@ class NewsScraper(CommonNewsHandler):
             if 'http' not in url:
                 url = urljoin(url_root, url)
 
-            # save url and article title and subtitle
-            subtitle = NewsScraper.parse_article_subtitle(soup=article)
+            # parse subtitle
+            subtitle = article.find('div', {'class': ['article__subtitle']})
+            if subtitle:
+                subtitle = subtitle.text.strip()
+
             result[url] = CommonNewsHandler.get_article_row(url=url, title=link.text, subtitle=subtitle)
 
         return result
@@ -101,18 +130,17 @@ class NewsScraper(CommonNewsHandler):
 
         return date
 
+
     @staticmethod
     def parse_article_subtitle(html=None, soup=None):
+        """
 
-        if soup is None:
-            soup = BeautifulSoup(html, 'html.parser')
+        :param html: None
+        :param soup: None
+        :return: None as subtitle scraped in  parse_articles_list method already
+        """
+        return None
 
-        subtitle = soup.find_all('div', {'class': ['article__subtitle']})
-
-        if subtitle:
-            return subtitle[0].text.strip()
-        else:
-            return None
 
     @staticmethod
     def parse_article_text(html=None, soup=None):

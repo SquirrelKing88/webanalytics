@@ -9,6 +9,22 @@ from bs4 import BeautifulSoup
 class NewsScraper(CommonNewsHandler):
 
     @staticmethod
+    def get_root_url():
+        """
+
+        :return: url for news page
+        """
+        return "http://www.spiegel.de/"
+
+    @staticmethod
+    def get_country_code():
+        """
+
+        :return: country code
+        """
+        return 'de'
+
+    @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')

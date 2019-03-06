@@ -2,7 +2,7 @@ from Requests.Requester import Requester
 from Country.Germany.News.SPIEGEL.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
-from Scraper.Writters.FileWritter import FileWriter
+from Scraper.Writers.FileWriter import FileWriter
 
 translator = GoogleTranslator()
 

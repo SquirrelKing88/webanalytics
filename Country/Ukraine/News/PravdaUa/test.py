@@ -2,56 +2,73 @@ from Requests.Requester import Requester
 from Country.Ukraine.News.PravdaUa.NewsScraper import NewsScraper
 from bs4 import BeautifulSoup
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
-from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter
+from concurrent.futures import ThreadPoolExecutor
 from Scraper.Writers.FileWriter import FileWriter
+from multiprocessing import cpu_count
+import functools
 
-translator = GoogleTranslator()
 
-# today news https://www.pravda.com.ua/news/
-url = "https://www.pravda.com.ua/news/"
 
-# step 1. Read all page with taday's news
-requester = Requester(url=url, retries=5, sleep_time=3)
-response = requester.make_get_request()
-html = response.get_data()
+def parse_article_job(scraper, url):
 
-# step 2. Create half empty dataset with parsed urls of articles
-dataset = NewsScraper.parse_articles_list(url_root=requester.get_url_root(),html=html)
-
-# step 3. Loop over all urls and scrape article data
-for url in list(dataset):
-
-    print("parse", url)
-
+    result = scraper.get_article_row()
+    result['url'] = url
 
     # make new request to upload article data
+    # and load html into soup
     requester = Requester(url=url, retries=5)
     response = requester.make_get_request()
     html = response.get_data()
-
-    # load html into soup
     soup = BeautifulSoup(html, 'html.parser')
 
-    dataset[url]["html"], dataset[url]["text"] = NewsScraper.parse_article_text(html=html, soup=soup)
-    dataset[url]['date'] = NewsScraper.parse_article_datetime(html=html, soup=soup)
+    result['date'] = scraper.parse_article_datetime(html=html, soup=soup)
+    result['subtitle'] = scraper.parse_article_subtitle(html=html, soup=soup)
+    result["html"], result["text"] = scraper.parse_article_text(html=html, soup=soup)
+
+    # TODO translation as pool
+    translator = GoogleTranslator()
+    translation_result = translator.get_translation(result["text"])
+    result["translation_en"] = translation_result['translation']
+    # clear memory
+    del translator
+
+    print('Article {0} scraped'.format(url))
+
+    return result
+
+
+def parse_article_job_callback(job_response, dataset):
+    article = job_response.result()
+    dataset[article['url']].update({key: value for key, value in article.items() if value})
 
 
 
-    translation_result = translator.get_translation(dataset[url]["text"])
-    dataset[url]["translation_en"] = translation_result['translation']
 
-    print( dataset[url])
 
-# step 4. Save dataset to folder
 
-# es = ElasticSearchWriter(index_name='test_ukraine')
-writers = [FileWriter("data/news.csv")]
+scraper = NewsScraper
+max_workers = 100
+pool = ThreadPoolExecutor(max_workers=max_workers)
 
-for writer in writers:
-    writer.write(dataset)
 
-# clear my ElasticSearch data
-# es.delete_index()
+requester = Requester(url=scraper.get_root_url(), retries=5, sleep_time=3)
+response = requester.make_get_request()
+html = response.get_data()
+
+
+dataset = scraper.parse_articles_list(url_root=requester.get_url_root(), html=html)
+
+
+with pool as executor:
+    for url in list(dataset):
+        job = executor.submit(functools.partial(parse_article_job, url=url, scraper=scraper))
+        job.add_done_callback(functools.partial(parse_article_job_callback, dataset=dataset))
+
+
+
+
+writer = FileWriter("data/news.csv")
+writer.write(dataset)
 
 
 
