@@ -1,0 +1,103 @@
+from urllib.parse import urljoin
+from datetime import datetime
+from Scraper.CommonNewsHandler import CommonNewsHandler
+import re
+from bs4 import BeautifulSoup
+from Requests.Requester import Requester
+
+class NewsScraper(CommonNewsHandler):
+
+
+    @staticmethod
+    def get_country_code():
+        """
+        :return: country code
+        """
+        return 'pl'
+
+    @staticmethod
+    def get_root_url():
+        return "http://wiadomosci.gazeta.pl/wiadomosci/0,114871.html"
+
+    @staticmethod
+    def parse_articles_list(url_root=None, html=None, soup=None, date=None):
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+            div_news = soup.find_all('li', {'class':'entry'})
+
+            if not div_news:
+                return None
+
+            result = dict()
+
+            for article in div_news:
+                link = article.find('a')
+                url = link['href']
+
+                if 'http' not in url:
+                    url = urljoin(url_root, url)
+
+                requester = Requester(url=url, retries=5, sleep_time=3)
+                response = requester.make_get_request()
+                html = response.get_data()
+
+                current_date=NewsScraper.parse_article_datetime(html)
+                if(current_date.day!=date.day or current_date.month!=date.month or current_date.year!=date.year):
+                    return result
+
+                result[url] = CommonNewsHandler.get_article_row(url=url, title=link["title"])
+            return result
+
+    @staticmethod
+    def parse_article_subtitle(html=None, soup=None):
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+        article = soup.find('div', {'id':'gazeta_article_lead'})
+
+        return article.text
+
+    @staticmethod
+    def parse_article_datetime(html=None, soup=None):
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+        time = soup.find('time')
+
+        line = re.search(r"\d{2}\.\d{2}\.\d{4} \d{2}:\d{2}",time.text).group(0)
+
+        #23.01.2019 13:42
+
+        day,line=line.split(".",1)
+        month,line=line.split(".",1)
+        year=line[0:4]
+        line=re.search("\d{2}:\d{2}",line)
+        line=line.group(0)
+        hour=line[0:1]
+        minute=line[3:4]
+        second=00
+
+        date = datetime(year=int(year), month=int(month), day=int(day), hour=int(hour), minute=int(minute), second=int(second))
+
+        return date
+
+    @staticmethod
+    def parse_article_text(html=None, soup=None):
+        if soup is None:
+            soup = BeautifulSoup(html, 'html.parser')
+
+        articles = soup.find_all('p', {'class': 'art_paragraph'})
+
+        if not articles:
+            return None
+
+        result=""
+
+        for article in articles:
+            result+=article.text
+
+        return soup.prettify(), result
+
+
+

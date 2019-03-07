@@ -47,7 +47,10 @@ class ScraperJob:
 
     def scrape(self):
 
-        max_workers = 100
+        #TODO
+        #max_workers = 100
+        max_workers = 1
+
         pool = ThreadPoolExecutor(max_workers=max_workers)
         requester = Requester(url=self.__scraper.get_root_url(), retries=5, sleep_time=3)
         response = requester.make_get_request()
