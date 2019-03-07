@@ -1,4 +1,21 @@
 class CommonNewsHandler:
+
+    @staticmethod
+    def get_root_url():
+        """
+
+        :return: url for news page
+        """
+        return None
+
+    @staticmethod
+    def get_country_code():
+        """
+
+        :return: country code
+        """
+        return None
+
     @staticmethod
     def get_article_row(url=None, date=None, title=None, subtitle=None, html=None, text=None, translation=None):
         """
@@ -88,6 +105,10 @@ class CommonNewsHandler:
         """
 
         return None, None
+
+
+
+
 
 
 
