@@ -1,4 +1,4 @@
-from Country.Poland.News.WiadomosciGazetaPl.CategoriesScraper import NewsScraper
+from Country.Poland.News.WiadomosciGazetaPl.NewsScraper import NewsScraper
 from LanguageProcessing.Translation.GoogleTranslator import GoogleTranslator
 from Scraper.Writers.FileWriter import FileWriter
 from Scraper.Writers.ElasticSearchWritter import ElasticSearchWriter

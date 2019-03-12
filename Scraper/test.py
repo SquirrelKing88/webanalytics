@@ -2,7 +2,7 @@ from Scraper.ScraperJob import ScraperJob
 from Scraper.Writers.FileWriter import FileWriter
 #from Country.Germany.News.SPIEGEL.NewsScraper import NewsScraper as de_scraper
 #from Country.Ukraine.News.PravdaUa.NewsScraper import NewsScraper as uk_scraper
-from Country.Poland.News.WiadomosciGazetaPl.CategoriesScraper import NewsScraper as pl_scraper
+from Country.Poland.News.WiadomosciGazetaPl.NewsScraper import NewsScraper as pl_scraper
 # TODO add all country
 
 
