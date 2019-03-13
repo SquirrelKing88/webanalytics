@@ -7,6 +7,18 @@ from bs4 import BeautifulSoup
 class NewsScraper(CommonNewsHandler):
 
     @staticmethod
+    def get_country_code():
+        """
+        :return: country code
+        """
+        return 'pl'
+
+    @staticmethod
+    def get_root_url():
+        return "http://wiadomosci.gazeta.pl/wiadomosci/0,114871.html"
+
+
+    @staticmethod
     def parse_articles_list(url_root=None, html=None, soup=None):
         if soup is None:
             soup = BeautifulSoup(html, 'html.parser')
@@ -76,4 +88,4 @@ class NewsScraper(CommonNewsHandler):
         for article in articles:
             result+=article.text
 
-        return result, soup.prettify()
+        return soup.prettify(),result
